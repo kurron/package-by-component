@@ -21,6 +21,9 @@ This project is an implementation of the GURPS 4th Edition rules using an idea f
 
 == Tips and Tricks
 
+=== Architectural Diagrams
+`docker run --pull --interactive --tty --rm --name structurizr --publish 8080:8080 --env STRUCTURIZR_WORKSPACE_PATH=architectural-diagrams --volume $(pwd):/usr/local/structurizr structurizr/lite:latest`
+
 == Troubleshooting
 
 == Contributing
