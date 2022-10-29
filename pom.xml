@@ -61,5 +61,6 @@
 		<module>command-processor</module>
 		<module>event-processor</module>
 		<module>command-line-interface</module>
+		<module>kotlin-skeleton</module>
 	</modules>
 </project>
