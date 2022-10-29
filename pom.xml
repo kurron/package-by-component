@@ -16,19 +16,50 @@
 	<description>Trying out &quot;package by component&quot;</description>
 	<properties>
 		<java.version>17</java.version>
+		<cucumber.version>7.2.3</cucumber.version>
+		<repackage.classifier/>
+		<kotlin.version>1.6.21</kotlin.version>
+		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<spring-native.version>0.12.1</spring-native.version>
+		<spring-shell.version>2.1.2</spring-shell.version>
+		<testcontainers.version>1.17.4</testcontainers.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>io.cucumber</groupId>
 				<artifactId>cucumber-bom</artifactId>
-				<version>7.2.3</version>
+				<version>${cucumber.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.shell</groupId>
+				<artifactId>spring-shell-dependencies</artifactId>
+				<version>${spring-shell.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<modules>
-          <module>specification-by-example</module>
+        <module>specification-by-example</module>
+		<module>command-processor</module>
+		<module>event-processor</module>
+		<module>command-line-interface</module>
 	</modules>
 </project>
