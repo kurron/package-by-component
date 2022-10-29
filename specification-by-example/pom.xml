@@ -12,19 +12,6 @@
 	<name>specification-by-example</name>
 	<description>Cucumber tests</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.cucumber</groupId>
-				<artifactId>cucumber-bom</artifactId>
-				<!-- going any higher causes a runtime error and skipped tests -->
-				<version>7.2.3</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
