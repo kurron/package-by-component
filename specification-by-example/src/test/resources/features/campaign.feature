@@ -190,3 +190,129 @@ Ability: Create New Campaign
     Given Gary is creating a new campaign
     When Gary provided inappropriate professions
     Then the campaign is assigned the inappropriate professions
+
+  Scenario: Allowed Player Character Races
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign a list of allowed player character races to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided allowed player character races
+    Then the campaign is assigned the allowed player character races
+
+  Scenario: Starting Wealth
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the starting wealth level to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the starting wealth level
+    Then the campaign is assigned the starting wealth level
+
+  Scenario: Starting Wealth Levels Allowed
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the allowed starting wealth levels to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the starting wealth levels
+    Then the campaign is assigned the starting wealth levels
+
+  Scenario: Starting Status Levels Allowed
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the allowed starting status levels to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the starting status levels
+    Then the campaign is assigned the starting status levels
+
+  Scenario: Starting Technology Levels Allowed
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the allowed starting technology levels to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the starting technology levels
+    Then the campaign is assigned the starting technology levels
+
+  Scenario: Allowed Languages
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the allowed languages to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the allowed languages
+    Then the campaign is assigned the allowed languages
+
+  Scenario: Allowed Cultural Familiarities
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the allowed cultural familiarities to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the cultural familiarities
+    Then the campaign is assigned the cultural familiarities
+
+  Scenario: Required Advantages
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the required advantages to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the required advantages
+    Then the campaign is assigned the required advantages
+
+  Scenario: Required Disadvantages
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the required disadvantages to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the required disadvantages
+    Then the campaign is assigned the required disadvantages
+
+  Scenario: Required Skills
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the required skills to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the required skill
+    Then the campaign is assigned the required skills
+
+  Scenario: Appropriate Advantages
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the appropriate advantages to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the appropriate advantages
+    Then the campaign is assigned the appropriate advantages
+
+  Scenario: Appropriate Disadvantages
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the appropriate disadvantages to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the appropriate disadvantages
+    Then the campaign is assigned the appropriate disadvantages
+
+  Scenario: Appropriate Skills
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the appropriate skills to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the appropriate skill
+    Then the campaign is assigned the appropriate skills
+
+  Scenario: Inappropriate Advantages
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the inappropriate advantages to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the inappropriate advantages
+    Then the campaign is assigned the inappropriate advantages
+
+  Scenario: Inappropriate Disadvantages
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the inappropriate disadvantages to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the inappropriate disadvantages
+    Then the campaign is assigned the inappropriate disadvantages
+
+  Scenario: Inappropriate Skills
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the inappropriate skills to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the inappropriate skill
+    Then the campaign is assigned the inappropriate skills
+
+  Scenario: Appropriate Patrons
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the appropriate patrons to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the appropriate patrons
+    Then the campaign is assigned the appropriate patrons
+
+  Scenario: Appropriate Enemies
+  In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign the appropriate enemies to the campaign (domain-level work).
+
+    Given Gary is creating a new campaign
+    When Gary provided the appropriate enemies
+    Then the campaign is assigned the appropriate enemies
