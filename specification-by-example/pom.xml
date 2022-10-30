@@ -11,7 +11,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>specification-by-example</name>
 	<description>Cucumber tests</description>
-
+	<properties>
+		<spring-boot.build-image.skip>true</spring-boot.build-image.skip>
+		<install.install.skip>true</install.install.skip>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
