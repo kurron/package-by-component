@@ -16,7 +16,7 @@ This project is an implementation of the GURPS 4th Edition rules using an idea f
 * JDK 17 or greater
 
 == Building
-* `./mvnw -pl '!specification-by-example'  --batch-mode --update-snapshots --errors clean install spring-boot:build-image`
+* `./mvnw -DskipTests -pl '!specification-by-example'  --batch-mode --update-snapshots --errors clean package spring-boot:build-image`
 
 == Installation
 

@@ -1,8 +1,9 @@
 services:
-  backend:
+  command-processor:
     image: command-processor:0.0.1-SNAPSHOT
     networks:
       - back-tier
+
 volumes:
   db-data:
     driver: flocker
