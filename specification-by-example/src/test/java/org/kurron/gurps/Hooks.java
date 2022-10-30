@@ -15,16 +15,6 @@ import org.slf4j.LoggerFactory;
 public class Hooks {
     private static final Logger LOGGER = LoggerFactory.getLogger(Hooks.class);
 
-    @Before
-    public void beforeFirstStepOfTheScenario() {
-        LOGGER.warn("beforeFirstStepOfTheScenario called");
-    }
-
-    @After
-    public void afterLastStepOfTheScenario() {
-        LOGGER.warn("afterLastStepOfTheScenario called");
-    }
-
     @BeforeStep
     public void beforeEachStep() {
         LOGGER.warn("beforeEachStep called");
