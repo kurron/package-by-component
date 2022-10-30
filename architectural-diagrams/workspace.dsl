@@ -63,20 +63,46 @@ workspace "GURPS Online" "Second" {
             }
             cli = container "Command Line Interface" {
                 description "Command line user interface"
-                technology "Spring, Java"
+                technology "Spring, Kotlin"
                 perspectives {
                 }
                 this -> messageBroker "sends command messages to" "JSON over Pulsar Protocol" "TAG" {
                 }
             }
+            queryProcessor = container "Query Processor" {
+                description "Handles requests for information"
+                technology "Spring, Kotlin"
+                perspectives {
+                }
+                queryExecutor = component "Query Executor" {
+                    description "Fetches information from the database"
+                    technology "Kotlin, Spring Data MongoDB"
+                    perspectives {
+                    }
+                    this -> readStore "GURPS document" "MongoDB's BSON protocol" "TAG" {
+                    }
+                }
+                graphQL = component "GraphQL Handler" {
+                    description "Accepts GraphQL queries"
+                    technology "Kotlin, Spring GraphQL"
+                    perspectives {
+                    }
+                    this -> queryExecutor "GraphQL request" "CURRENTLY UNKNOWN" "TAG" {
+                    }
+                    gui -> this "GraphQL request" "HTTP" "TAG" {
+                    }
+                    cli -> this "GraphQL request" "HTTP" "TAG" {
+                    }
+                }
+            }
             eventProcessor = container "Event Processor" {
                 description "Reacts to events"
-                technology "Spring, Java"
+                technology "Spring, Kotlin"
                 perspectives {
                 }
                 storageCommandExecutor = component "Storage Command Executor" {
                     description "Executes storage update commands "
-                    technology "Apache Pulsar, Java"
+                    technology "Apache Pulsar, Kotlin"
                     perspectives {
                     }
                     this -> readStore "GURPS document" "Spring Data MongoDB" "TAG" {
@@ -84,7 +110,7 @@ workspace "GURPS Online" "Second" {
                 }
                 messagingPortEvent = component "Messaging Port (events)" {
                     description "Accepts events messages, converting them into storage update commands"
-                    technology "Apache Pulsar, Java"
+                    technology "Apache Pulsar, Kotlin"
                     perspectives {
                     }
                     messageBroker -> this "sends events of completed commands" "GURPS events" "TAG" {
@@ -95,22 +121,22 @@ workspace "GURPS Online" "Second" {
             }
             commandProcessor = container "Command Processor" {
                 description "Executes commands"
-                technology "Spring, Java"
+                technology "Spring, Kotlin"
                 perspectives {
                 }
                 commandExecutor = component "Command Executor" {
                     description "Executes GURPS commands "
-                    technology "Apache Pulsar, Java"
+                    technology "Apache Pulsar, Kotlin, Spring Data MongoDB"
                     perspectives {
                     }
                     this -> messageBroker "publish events of completed commands" "GURPS events" "TAG" {
                     }
-                    this -> writeStore "GURPS document" "Spring Data MongoDB" "TAG" {
+                    this -> writeStore "GURPS document" "MongoDB's BSON protocol" "TAG" {
                     }
                 }
                 messagingPortCommand = component "Messaging Port (commands)" {
                     description "Accepts command messages, converting them into GURPS commands"
-                    technology "Apache Pulsar, Java"
+                    technology "Apache Pulsar, Kotlin"
                     perspectives {
                     }
                     messageBroker -> this "sends command messages to" "JSON over Pulsar Protocol" "TAG" {
@@ -160,6 +186,12 @@ workspace "GURPS Online" "Second" {
         }
 
         component "eventProcessor" "event-processor" "SOMETHING MEANINGFUL SHOULD GO HERE" {
+            title "Something meaningful should go here"
+            include *
+            autoLayout
+        }
+
+        component "queryProcessor" "query-processor" "SOMETHING MEANINGFUL SHOULD GO HERE" {
             title "Something meaningful should go here"
             include *
             autoLayout
