@@ -284,7 +284,7 @@
 					<image>
 						<builder>paketobuildpacks/builder:tiny</builder>
 						<env>
-							<BP_NATIVE_IMAGE>false</BP_NATIVE_IMAGE>
+							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 						</env>
 					</image>
 				</configuration>
@@ -314,27 +314,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-<!--
-			<plugin>
-				<groupId>org.springframework.experimental</groupId>
-				<artifactId>spring-aot-maven-plugin</artifactId>
-				<version>${spring-native.version}</version>
-				<executions>
-					<execution>
-						<id>test-generate</id>
-						<goals>
-							<goal>test-generate</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>generate</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
--->
 			<plugin>
 				<groupId>org.hibernate.orm.tooling</groupId>
 				<artifactId>hibernate-enhance-maven-plugin</artifactId>
@@ -358,7 +337,7 @@
 		</plugins>
 	</build>
 
-	<profiles>
+<!--	<profiles>
 		<profile>
 			<id>native</id>
 			<properties>
@@ -399,6 +378,6 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>
+	</profiles>-->
 
 </project>
