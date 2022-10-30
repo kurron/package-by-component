@@ -21,6 +21,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.kurron.gurps</groupId>
+			<artifactId>shared-components</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- just to have something to test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -57,6 +57,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<modules>
+		<module>shared-components</module>
         <module>specification-by-example</module>
 		<module>command-processor</module>
 		<module>event-processor</module>

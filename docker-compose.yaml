@@ -1,0 +1,23 @@
+services:
+  backend:
+    image: command-processor:0.0.1-SNAPSHOT
+    networks:
+      - back-tier
+volumes:
+  db-data:
+    driver: flocker
+    driver_opts:
+      size: "10GiB"
+
+configs:
+  httpd-config:
+    external: true
+
+secrets:
+  server-certificate:
+    external: true
+
+networks:
+  # The presence of these objects is sufficient to define them
+  front-tier: {}
+  back-tier: {}
