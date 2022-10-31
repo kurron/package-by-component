@@ -104,8 +104,13 @@
 		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>5.0.0</version>
+				<configuration>
+					<dotGitDirectory>${project.basedir}/../.git</dotGitDirectory>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
