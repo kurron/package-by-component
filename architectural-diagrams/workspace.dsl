@@ -23,6 +23,15 @@ workspace "GURPS Online" "Second" {
     !constant FOO "Some text you want to reuse."
 
     model {
+        gary = Person "Gary" {
+            description "Game Master"
+        }
+        penny = Person "Penny" {
+            description "Player"
+        }
+        adam = Person "Adam" {
+            description "System Administrator"
+        }
         gurps = softwareSystem "GURPS Online" {
             description "Online version of GURPS release 4"
             perspectives {
@@ -46,8 +55,8 @@ workspace "GURPS Online" "Second" {
                 }
             }
             webServer = container "Web Server" {
-                description "Web server"
-                technology "Apache Tomcat"
+                description "HTTP server"
+                technology "Kotlin, Spring Boot, Apache Tomcat"
                 perspectives {
                 }
                 this -> messageBroker "sends command messages to" "JSON over Pulsar Protocol" "TAG" {
@@ -60,18 +69,24 @@ workspace "GURPS Online" "Second" {
                 }
                 this -> webServer "sends command messages to" "JSON over HTTP" "TAG" {
                 }
+                gary -> this "creates campaigns" "JSON over HTTP" "TAG" {
+                }
+                penny -> this "creates characters" "JSON over HTTP" "TAG" {
+                }
             }
             cli = container "Command Line Interface" {
                 description "Command line user interface"
-                technology "Spring, Kotlin"
+                technology "Kotlin, Spring Boot"
                 perspectives {
+                }
+                adam -> this "sends command messages to" "JSON over Pulsar Protocol" "TAG" {
                 }
                 this -> messageBroker "sends command messages to" "JSON over Pulsar Protocol" "TAG" {
                 }
             }
             queryProcessor = container "Query Processor" {
                 description "Handles requests for information"
-                technology "Spring, Kotlin"
+                technology "Kotlin, Spring Boot"
                 perspectives {
                 }
                 queryExecutor = component "Query Executor" {
@@ -89,7 +104,7 @@ workspace "GURPS Online" "Second" {
                     }
                     this -> queryExecutor "GraphQL request" "CURRENTLY UNKNOWN" "TAG" {
                     }
-                    gui -> this "GraphQL request" "HTTP" "TAG" {
+                    webServer -> this "GraphQL request" "HTTP" "TAG" {
                     }
                     cli -> this "GraphQL request" "HTTP" "TAG" {
                     }
@@ -97,12 +112,12 @@ workspace "GURPS Online" "Second" {
             }
             eventProcessor = container "Event Processor" {
                 description "Reacts to events"
-                technology "Spring, Kotlin"
+                technology "Kotlin, Spring Boot"
                 perspectives {
                 }
                 storageCommandExecutor = component "Storage Command Executor" {
                     description "Executes storage update commands "
-                    technology "Apache Pulsar, Kotlin"
+                    technology "Kotlin, Spring Pulsar"
                     perspectives {
                     }
                     this -> readStore "GURPS document" "Spring Data MongoDB" "TAG" {
@@ -110,7 +125,7 @@ workspace "GURPS Online" "Second" {
                 }
                 messagingPortEvent = component "Messaging Port (events)" {
                     description "Accepts events messages, converting them into storage update commands"
-                    technology "Apache Pulsar, Kotlin"
+                    technology "Kotlin, Spring Pulsar"
                     perspectives {
                     }
                     messageBroker -> this "sends events of completed commands" "GURPS events" "TAG" {
@@ -121,12 +136,12 @@ workspace "GURPS Online" "Second" {
             }
             commandProcessor = container "Command Processor" {
                 description "Executes commands"
-                technology "Spring, Kotlin"
+                technology "Kotlin, Spring Boot"
                 perspectives {
                 }
                 commandExecutor = component "Command Executor" {
                     description "Executes GURPS commands "
-                    technology "Apache Pulsar, Kotlin, Spring Data MongoDB"
+                    technology "Kotlin, Spring Pulsar, Spring Data MongoDB"
                     perspectives {
                     }
                     this -> messageBroker "publish events of completed commands" "GURPS events" "TAG" {
@@ -136,7 +151,7 @@ workspace "GURPS Online" "Second" {
                 }
                 messagingPortCommand = component "Messaging Port (commands)" {
                     description "Accepts command messages, converting them into GURPS commands"
-                    technology "Apache Pulsar, Kotlin"
+                    technology "Kotlin, Spring Pulsar"
                     perspectives {
                     }
                     messageBroker -> this "sends command messages to" "JSON over Pulsar Protocol" "TAG" {
@@ -146,7 +161,70 @@ workspace "GURPS Online" "Second" {
                 }
             }
         }
+        production = deploymentEnvironment "production" {
+            deploymentNode "MongoDB Cluster" {
+                description "MongoDB fault tolerant cluster"
+                technology "Hosted MongoDB"
+                containerInstance writeStore
+                containerInstance readStore
+            }
+            deploymentNode "Apache Pulsar Cluster" {
+                description "Pulsar fault tolerant cluster"
+                technology "Hosted Apache Pulsar"
+                containerInstance messageBroker
+            }
+            productionKubernetes = deploymentNode "Kubernetes Cluster" {
+                description "On-prem Kubernetes cluster"
+                technology "K3S, Rancher"
+                webServerPods = deploymentNode "Web Server Pods" {
+                    description "On-prem Kubernetes cluster"
+                    technology "Kubernetes"
+                    instances 4
+                    containerInstance webServer {
+                        description "some description"
+                        healthCheck "some-name" "http://example.com/health" 60 60
+                    }
+                }
+                deploymentNode "Command Processor Pods" {
+                    description "On-prem Kubernetes cluster"
+                    technology "Kubernetes"
+                    instances 8
+                    containerInstance commandProcessor {
+                        description "some description"
+                        healthCheck "some-name" "http://example.com/health" 60 60
+                    }
+                }
+                deploymentNode "Event Processor Pods" {
+                    description "On-prem Kubernetes cluster"
+                    technology "Kubernetes"
+                    instances 8
+                    containerInstance eventProcessor {
+                        description "some description"
+                        healthCheck "some-name" "http://example.com/health" 60 60
+                    }
+                }
+                deploymentNode "Query Processor Pods" {
+                    description "On-prem Kubernetes cluster"
+                    technology "Kubernetes"
+                    instances 16
+                    containerInstance queryProcessor {
+                        description "some description"
+                        healthCheck "some-name" "http://example.com/health" 60 60
+                    }
+                }
+            }
+            deploymentNode "Firewall" {
+                description "Internet Gateway"
+                technology "Some fancy technology"
+                instances 8
+                gateway = infrastructureNode "Internet Gateway" "Controls access from the internet" "Some fancy technology" "TAG" {
+                    gateway -> webServerPods "sends web traffic to" "HTTPS" {
+                    }
+                }
+            }
+        }
     }
+
 
     views {
         theme default
@@ -193,6 +271,13 @@ workspace "GURPS Online" "Second" {
 
         component "queryProcessor" "query-processor" "SOMETHING MEANINGFUL SHOULD GO HERE" {
             title "Something meaningful should go here"
+            include *
+            autoLayout
+        }
+
+        deployment "*" "production" "deployment-production" "Production deployment overview" {
+            title "Production Deployment Diagram"
+            description "Some instances are hosted off-site"
             include *
             autoLayout
         }
