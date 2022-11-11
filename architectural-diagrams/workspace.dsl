@@ -80,24 +80,24 @@ workspace "GURPS Online" "Second" {
             }
             messageBroker = container "Message Broker" {
                 description "Messaging fabric"
-                technology "Apache Pulsar"
+                technology "RabbitMQ"
                 perspectives {
                 }
-                commandTopic = component "Command Topic" {
+                commandExchange = component "Command Exchange" {
                     description "Command messages get published to here"
-                    technology "Apache Pulsar"
+                    technology "RabbitMQ"
                     perspectives {
                     }
                 }
-                eventTopic = component "Event Topic" {
+                eventExchange = component "Event Exchange" {
                     description "Event messages get published to here"
-                    technology "Apache Pulsar"
+                    technology "RabbitMQ"
                     perspectives {
                     }
                 }
-                component "Dead Letter Topic" {
+                component "Dead Letter Queue" {
                     description "Undeliverable messages get published to here"
-                    technology "Apache Pulsar"
+                    technology "RabbitMQ"
                     perspectives {
                     }
                 }
@@ -131,7 +131,7 @@ workspace "GURPS Online" "Second" {
                 }
                 adam -> this "sends commands to" "JSON over AMQP" "TAG" {
                 }
-                this -> commandTopic "sends commands to" "JSON over AMQP" "TAG" {
+                this -> commandExchange "sends commands to" "JSON over AMQP" "TAG" {
                 }
             }
             queryProcessor = container "Query Processor" {
@@ -182,7 +182,7 @@ workspace "GURPS Online" "Second" {
                     technology "Kotlin, Spring Integration"
                     perspectives {
                     }
-                    eventTopic -> this "sends events to" "JSON over AMQP" "TAG" {
+                    eventExchange -> this "sends events to" "JSON over AMQP" "TAG" {
                     }
                     this -> storageCommandExecutor "sends storage commands to" "direct call" "TAG" {
                     }
@@ -198,7 +198,7 @@ workspace "GURPS Online" "Second" {
                     technology "Kotlin, Spring Integration"
                     perspectives {
                     }
-                    this -> eventTopic "publishes events to" "JSON over AMQP" "TAG" {
+                    this -> eventExchange "publishes events to" "JSON over AMQP" "TAG" {
                     }
                     this -> inProgressCampaigns "sends campaign changes to" "MongoDB's BSON protocol" "TAG" {
                     }
@@ -210,7 +210,7 @@ workspace "GURPS Online" "Second" {
                     technology "Kotlin, Spring Integration"
                     perspectives {
                     }
-                    commandTopic -> this "sends commands to" "JSON over AMQP" "TAG" {
+                    commandExchange -> this "sends commands to" "JSON over AMQP" "TAG" {
                     }
                     this -> commandExecutor "sends commands to" "direct call" "TAG" {
                     }
@@ -224,9 +224,9 @@ workspace "GURPS Online" "Second" {
                 containerInstance writeStore
                 containerInstance readStore
             }
-            deploymentNode "Apache Pulsar Cluster" {
-                description "Pulsar fault tolerant cluster"
-                technology "Hosted Apache Pulsar"
+            deploymentNode "RabbitMQ Cluster" {
+                description "RabbitMQ fault tolerant cluster"
+                technology "Hosted RabbitMQ"
                 containerInstance messageBroker
             }
             productionKubernetes = deploymentNode "Kubernetes Cluster" {
@@ -297,7 +297,7 @@ workspace "GURPS Online" "Second" {
             }
             relationship "HTTP" {
             }
-            relationship "Pulsar" {
+            relationship "AMQP" {
             }
         }
 
@@ -313,37 +313,37 @@ workspace "GURPS Online" "Second" {
             autoLayout lr
         }
 
-        component "commandProcessor" "command-processor" "View of internal components" {
+        component "commandProcessor" "command-processor" "Double click on + to expand view" {
             title "Command Processor"
             include *
             autoLayout lr
         }
 
-        component "eventProcessor" "event-processor" "View of internal components" {
+        component "eventProcessor" "event-processor" "Double click on + to expand view" {
             title "Event Processor"
             include *
             autoLayout lr 
         }
 
-        component "queryProcessor" "query-processor" "View of internal components" {
+        component "queryProcessor" "query-processor" "Double click on + to expand view" {
             title "Query Processor"
             include *
             autoLayout lr
         }
 
-        component "writeStore" "write-store" "View of database collections" {
+        component "writeStore" "write-store" "Double click on + to expand view" {
             title "Write Store"
             include *
             autoLayout lr
         }
 
-        component "readStore" "read-store" "View of database collections" {
+        component "readStore" "read-store" "Double click on + to expand view" {
             title "Read Store"
             include *
             autoLayout
         }
 
-        component "messageBroker" "message-broker" "View of Pulsar Topics" {
+        component "messageBroker" "message-broker" "Double click on + to expand view" {
             title "Message Broker"
             include *
             autoLayout
