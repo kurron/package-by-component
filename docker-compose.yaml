@@ -1,17 +1,19 @@
 services:
-  pulsar:
-    container_name: pulsar
-    image: apachepulsar/pulsar:2.10.2
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: rabbitmq
+    image: rabbitmq:management
     networks:
       - back-tier
     ports:
-      - "6650"
-      - "8080"
+      - "5672"
+      - "15672"
     tmpfs:
-      - /pulsar/data
-    command:
-      - bin/pulsar
-      - standalone
+      - /var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+      RABBITMQ_DEFAULT_VHOST: gurps
 
   command-processor:
     container_name: command-processor
@@ -21,19 +23,19 @@ services:
     ports:
       - "8080"
 
-volumes:
-  db-data:
-    driver: flocker
-    driver_opts:
-      size: "10GiB"
+#volumes:
+#  db-data:
+#    driver: flocker
+#    driver_opts:
+#      size: "10GiB"
 
-configs:
-  httpd-config:
-    external: true
-
-secrets:
-  server-certificate:
-    external: true
+#configs:
+#  httpd-config:
+#    external: true
+#
+#secrets:
+#  server-certificate:
+#    external: true
 
 networks:
   # The presence of these objects is sufficient to define them

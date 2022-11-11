@@ -95,7 +95,7 @@ workspace "GURPS Online" "Second" {
                     perspectives {
                     }
                 }
-                component "Dead Letter Queue" {
+                component "Dead Letter Exchange" {
                     description "Undeliverable messages get published to here"
                     technology "RabbitMQ"
                     perspectives {
