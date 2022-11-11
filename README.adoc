@@ -27,6 +27,11 @@ This project is an implementation of the GURPS 4th Edition rules using an idea f
 
 == Troubleshooting
 
+* Inbound channel adapters are used for one-way integration to bring data into the messaging application.
+* Outbound channel adapters are used for one-way integration to send data out of the messaging application.
+* Inbound gateways are used for a bidirectional integration flow, where some other system invokes the messaging application and receives a reply.
+* Outbound Gateways are used for a bidirectional integration flow, where the messaging application invokes some external service or entity and expects a result.
+
 == Contributing
 
 == License and Credits
