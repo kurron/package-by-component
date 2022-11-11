@@ -71,6 +71,12 @@ workspace "GURPS Online" "Second" {
                     perspectives {
                     }
                 }
+                component "Users Collection" {
+                    description "Stores system users"
+                    technology "MongoDB"
+                    perspectives {
+                    }
+                }
             }
             messageBroker = container "Message Broker" {
                 description "Messaging fabric"
