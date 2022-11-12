@@ -1,4 +1,4 @@
-package org.kurron.gurps.processor.command
+package org.kurron.gurps.shared
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

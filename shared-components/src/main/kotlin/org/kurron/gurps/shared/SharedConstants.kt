@@ -1,4 +1,4 @@
-package org.kurron.gurps.processor.command
+package org.kurron.gurps.shared
 
 /**
  * This file houses the values that have to be synced between modules in order for the system to operate correctly.

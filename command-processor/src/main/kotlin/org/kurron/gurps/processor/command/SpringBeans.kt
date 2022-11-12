@@ -1,5 +1,8 @@
 package org.kurron.gurps.processor.command
 
+import org.kurron.gurps.shared.Command
+import org.kurron.gurps.shared.Event
+import org.kurron.gurps.shared.SharedConstants
 import org.springframework.amqp.core.*
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
