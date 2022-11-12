@@ -116,6 +116,7 @@ workspace "GURPS Online" "Second" {
             gui = container "Web User Interface" {
                 description "Graphical user interface"
                 technology "HTML, Javascript"
+                tags "WebUI"
                 perspectives {
                 }
                 this -> webServer "sends commands to" "JSON over HTTP" "TAG" {
@@ -129,10 +130,11 @@ workspace "GURPS Online" "Second" {
             }
             cli = container "Command Line Interface" {
                 description "Command line user interface"
-                technology "Kotlin, Spring Boot"
+                technology "Kotlin, Spring Shell"
+                tags "CommandLine"
                 perspectives {
                 }
-                adam -> this "sends commands to" "JSON over AMQP" "AMQP" {
+                adam -> this "uses" "typed commands" "TAGE" {
                 }
                 this -> commandExchange "sends commands to" "JSON over AMQP" "AMQP" {
                 }
@@ -345,6 +347,12 @@ workspace "GURPS Online" "Second" {
             }
             element "Microservice" {
                 shape Hexagon
+            }
+            element "CommandLine" {
+                shape Box
+            }
+            element "WebUI" {
+                shape WebBrowser
             }
 
             relationship "HTTP" {
