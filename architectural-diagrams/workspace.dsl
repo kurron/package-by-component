@@ -193,26 +193,50 @@ workspace "GURPS Online" "Second" {
                 technology "Kotlin, Spring Boot, Spring Integration"
                 perspectives {
                 }
-                commandExecutor = component "Command Executor" {
-                    description "Executes GURPS commands "
+                eventProducer = component "Event Producer" {
+                    description "Publishes events to the message broker"
                     technology "Kotlin, Spring Integration"
                     perspectives {
                     }
                     this -> eventExchange "publishes events to" "JSON over AMQP" "TAG" {
+                    }
+                }
+                eventChannel = component "Event Channel" {
+                    description "Propagates events downstream to other components"
+                    technology "Kotlin, Spring Integration (channel)"
+                    perspectives {
+                    }
+                    this -> eventProducer "sends commands to" "Spring Integration" "TAG" {
+                    }
+                }
+                commandExecutor = component "Command Executor" {
+                    description "Executes GURPS commands "
+                    technology "Kotlin, Spring Integration (channel adapter)"
+                    perspectives {
+                    }
+                    this -> eventChannel "sends events to" "via messaging channel" "TAG" {
                     }
                     this -> inProgressCampaigns "sends campaign changes to" "MongoDB's BSON protocol" "TAG" {
                     }
                     this -> inProgressCharacters "sends character changes to" "MongoDB's BSON protocol" "TAG" {
                     }
                 }
+                commandChannel = component "Command Channel" {
+                    description "Propagates commands downstream to other components"
+                    technology "Kotlin, Spring Integration (channel)"
+                    perspectives {
+                    }
+                    this -> commandExecutor "sends commands to" "Spring Integration" "TAG" {
+                    }
+                }
                 messagingPortCommand = component "Messaging Port (commands)" {
                     description "Accepts command messages, converting them into GURPS commands"
-                    technology "Kotlin, Spring Integration"
+                    technology "Kotlin, Spring Integration (channel adapter)"
                     perspectives {
                     }
                     commandExchange -> this "sends commands to" "JSON over AMQP" "TAG" {
                     }
-                    this -> commandExecutor "sends commands to" "direct call" "TAG" {
+                    this -> commandChannel "sends commands to" "via messaging channel" "TAG" {
                     }
                 }
             }
