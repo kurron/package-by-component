@@ -39,6 +39,7 @@ workspace "GURPS Online" "Second" {
             writeStore = container "Write Store" {
                 description "Persists current state of the system, write-mostly"
                 technology "MongoDB"
+                tags "DataStore"
                 perspectives {
                 }
                 inProgressCampaigns = component "Campaign Collection" {
@@ -57,6 +58,7 @@ workspace "GURPS Online" "Second" {
             readStore = container "Read Store" {
                 description "Eventually consistent state of the system, read-only"
                 technology "MongoDB"
+                tags "DataStore"
                 perspectives {
                 }
                 completedCampaigns = component "Campaign Collection" {
@@ -81,6 +83,7 @@ workspace "GURPS Online" "Second" {
             messageBroker = container "Message Broker" {
                 description "Messaging fabric"
                 technology "RabbitMQ"
+                tags "MessageBroker"
                 perspectives {
                 }
                 commandExchange = component "Command Exchange" {
@@ -107,7 +110,7 @@ workspace "GURPS Online" "Second" {
                 technology "Kotlin, Spring Boot, Apache Tomcat"
                 perspectives {
                 }
-                this -> messageBroker "sends commands to" "JSON over AMQP" "TAG" {
+                this -> messageBroker "sends commands to" "JSON over AMQP" "AMQP" {
                 }
             }
             gui = container "Web User Interface" {
@@ -129,14 +132,15 @@ workspace "GURPS Online" "Second" {
                 technology "Kotlin, Spring Boot"
                 perspectives {
                 }
-                adam -> this "sends commands to" "JSON over AMQP" "TAG" {
+                adam -> this "sends commands to" "JSON over AMQP" "AMQP" {
                 }
-                this -> commandExchange "sends commands to" "JSON over AMQP" "TAG" {
+                this -> commandExchange "sends commands to" "JSON over AMQP" "AMQP" {
                 }
             }
             queryProcessor = container "Query Processor" {
                 description "Handles requests for information"
                 technology "Kotlin, Spring Boot"
+                tags "Microservice"
                 perspectives {
                 }
                 queryExecutor = component "Query Executor" {
@@ -144,9 +148,9 @@ workspace "GURPS Online" "Second" {
                     technology "Kotlin, Spring Data MongoDB"
                     perspectives {
                     }
-                    this -> completedCampaigns "reads documents from" "MongoDB's BSON protocol" "TAG" {
+                    this -> completedCampaigns "reads documents from" "MongoDB's BSON protocol" "BSON" {
                     }
-                    this -> completedCharacters "reads documents from" "MongoDB's BSON protocol" "TAG" {
+                    this -> completedCharacters "reads documents from" "MongoDB's BSON protocol" "BSON" {
                     }
                 }
                 graphQL = component "GraphQL Handler" {
@@ -165,6 +169,7 @@ workspace "GURPS Online" "Second" {
             eventProcessor = container "Event Processor" {
                 description "Reacts to events"
                 technology "Kotlin, Spring Boot, Spring Integration"
+                tags "Microservice"
                 perspectives {
                 }
                 storageCommandExecutor = component "Storage Command Executor" {
@@ -172,9 +177,9 @@ workspace "GURPS Online" "Second" {
                     technology "Kotlin, Spring Data MongoDB"
                     perspectives {
                     }
-                    this -> completedCampaigns "saves document to" "MongoDB's BSON protocol" "TAG" {
+                    this -> completedCampaigns "saves document to" "MongoDB's BSON protocol" "BSON" {
                     }
-                    this -> completedCharacters "saves document to" "MongoDB's BSON protocol" "TAG" {
+                    this -> completedCharacters "saves document to" "MongoDB's BSON protocol" "BSON" {
                     }
                 }
                 messagingPortEvent = component "Messaging Port (events)" {
@@ -182,7 +187,7 @@ workspace "GURPS Online" "Second" {
                     technology "Kotlin, Spring Integration"
                     perspectives {
                     }
-                    eventExchange -> this "sends events to" "JSON over AMQP" "TAG" {
+                    eventExchange -> this "sends events to" "JSON over AMQP" "AMQP" {
                     }
                     this -> storageCommandExecutor "sends storage commands to" "direct call" "TAG" {
                     }
@@ -191,50 +196,55 @@ workspace "GURPS Online" "Second" {
             commandProcessor = container "Command Processor" {
                 description "Executes commands"
                 technology "Kotlin, Spring Boot, Spring Integration"
+                tags "Microservice"
                 perspectives {
                 }
-                eventProducer = component "Event Producer" {
+                eventPort = component "Event Port" {
                     description "Publishes events to the message broker"
                     technology "Kotlin, Spring Integration"
+                    tags "Channel Adapter"
                     perspectives {
                     }
-                    this -> eventExchange "publishes events to" "JSON over AMQP" "TAG" {
+                    this -> eventExchange "publishes events to" "JSON over AMQP" "AMQP" {
                     }
                 }
                 eventChannel = component "Event Channel" {
                     description "Propagates events downstream to other components"
-                    technology "Kotlin, Spring Integration (channel)"
+                    technology "Kotlin, Spring Integration"
+                    tags "Channel"
                     perspectives {
                     }
-                    this -> eventProducer "sends commands to" "Spring Integration" "TAG" {
+                    this -> eventPort "sends commands to" "Spring Integration" "TAG" {
                     }
                 }
                 commandExecutor = component "Command Executor" {
                     description "Executes GURPS commands "
-                    technology "Kotlin, Spring Integration (channel adapter)"
+                    technology "Kotlin, Spring Integration"
                     perspectives {
                     }
                     this -> eventChannel "sends events to" "via messaging channel" "TAG" {
                     }
-                    this -> inProgressCampaigns "sends campaign changes to" "MongoDB's BSON protocol" "TAG" {
+                    this -> inProgressCampaigns "sends campaign changes to" "MongoDB's BSON protocol" "BSON" {
                     }
-                    this -> inProgressCharacters "sends character changes to" "MongoDB's BSON protocol" "TAG" {
+                    this -> inProgressCharacters "sends character changes to" "MongoDB's BSON protocol" "BSON" {
                     }
                 }
                 commandChannel = component "Command Channel" {
                     description "Propagates commands downstream to other components"
-                    technology "Kotlin, Spring Integration (channel)"
+                    technology "Kotlin, Spring Integration"
+                    tags "Channel"
                     perspectives {
                     }
                     this -> commandExecutor "sends commands to" "Spring Integration" "TAG" {
                     }
                 }
-                messagingPortCommand = component "Messaging Port (commands)" {
+                commandPort = component "Command Port" {
                     description "Accepts command messages, converting them into GURPS commands"
-                    technology "Kotlin, Spring Integration (channel adapter)"
+                    technology "Kotlin, Spring Integration"
+                    tags "Channel Adapter"
                     perspectives {
                     }
-                    commandExchange -> this "sends commands to" "JSON over AMQP" "TAG" {
+                    commandExchange -> this "sends commands to" "JSON over AMQP" "AMQP" {
                     }
                     this -> commandChannel "sends commands to" "via messaging channel" "TAG" {
                     }
@@ -305,12 +315,17 @@ workspace "GURPS Online" "Second" {
         }
     }
 
-
+    # https://visme.co/blog/website-color-schemes/
     views {
         theme default
         styles {
+            element "MessageBroker" {
+                shape Cylinder
+                background #E8A87C
+            }
             element "DataStore" {
                 shape Cylinder
+                background #E27D60
             }
             element "Cron" {
                 shape Robot
@@ -319,9 +334,30 @@ workspace "GURPS Online" "Second" {
                 shape Folder
                 background #dac292
             }
+            # shape <Box|RoundedBox|Circle|Ellipse|Hexagon|Cylinder|Pipe|Person|Robot|Folder|WebBrowser|MobileDevicePortrait|MobileDeviceLandscape|Component>
+            element "Channel" {
+                shape Pipe
+                background #C38D9E
+            }
+            element "Channel Adapter" {
+                shape Ellipse
+                background #41B3A3
+            }
+            element "Microservice" {
+                shape Hexagon
+            }
+
             relationship "HTTP" {
             }
             relationship "AMQP" {
+                thickness 2
+                style dashed
+                color #E8A87C
+            }
+            relationship "BSON" {
+                thickness 2
+                style dashed
+                color #E27D60
             }
         }
 
