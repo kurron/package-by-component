@@ -11,5 +11,6 @@ class SharedConstants {
         const val EVENT_ROUTING_KEY = "ignored-by-fanout-exchanges"
         const val EVENT_QUEUE_NAME = "gurps-events"
         const val EVENT_EXCHANGE_NAME = "gurps-events"
+        const val MESSAGE_ROUTING_LABEL = "gurps-routing-label"
     }
 }

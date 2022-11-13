@@ -219,14 +219,30 @@ workspace "GURPS Online" "Second" {
                     this -> eventPort "sends commands to" "Spring Integration" "TAG" {
                     }
                 }
-                commandExecutor = component "Command Executor" {
-                    description "Executes GURPS commands "
+                administrationCommandExecutor = component "Administration Command Executor" {
+                    description "Executes GURPS commands related to system administration"
+                    technology "Kotlin, Spring Integration"
+                    perspectives {
+                    }
+                    this -> eventChannel "sends events to" "via messaging channel" "TAG" {
+                    }
+                }
+                campaignCommandExecutor = component "Campaign Command Executor" {
+                    description "Executes GURPS commands related to campaigns"
                     technology "Kotlin, Spring Integration"
                     perspectives {
                     }
                     this -> eventChannel "sends events to" "via messaging channel" "TAG" {
                     }
                     this -> inProgressCampaigns "sends campaign changes to" "MongoDB's BSON protocol" "BSON" {
+                    }
+                }
+                characterCommandExecutor = component "Character Command Executor" {
+                    description "Executes GURPS commands related to characters"
+                    technology "Kotlin, Spring Integration"
+                    perspectives {
+                    }
+                    this -> eventChannel "sends events to" "via messaging channel" "TAG" {
                     }
                     this -> inProgressCharacters "sends character changes to" "MongoDB's BSON protocol" "BSON" {
                     }
@@ -237,7 +253,11 @@ workspace "GURPS Online" "Second" {
                     tags "Channel"
                     perspectives {
                     }
-                    this -> commandExecutor "sends commands to" "Spring Integration" "TAG" {
+                    this -> campaignCommandExecutor "sends campaign commands to" "Spring Integration" "TAG" {
+                    }
+                    this -> characterCommandExecutor "sends character commands to" "Spring Integration" "TAG" {
+                    }
+                    this -> administrationCommandExecutor "sends administration commands to" "Spring Integration" "TAG" {
                     }
                 }
                 commandPort = component "Command Port" {

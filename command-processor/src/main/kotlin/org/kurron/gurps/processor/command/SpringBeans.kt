@@ -3,6 +3,7 @@ package org.kurron.gurps.processor.command
 import org.kurron.gurps.shared.Command
 import org.kurron.gurps.shared.Event
 import org.kurron.gurps.shared.SharedConstants
+import org.kurron.gurps.shared.SharedConstants.Companion.MESSAGE_ROUTING_LABEL
 import org.springframework.amqp.core.*
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
@@ -13,17 +14,31 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.integration.amqp.inbound.AmqpInboundChannelAdapter
 import org.springframework.integration.amqp.outbound.AmqpOutboundEndpoint
+import org.springframework.integration.annotation.Router
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.DirectChannel
 import org.springframework.messaging.MessageChannel
+import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Headers
 import java.time.Instant
 
 
 @Configuration
 class SpringBeans {
+    @Bean
+    fun defaultOutputChannel(): MessageChannel = DirectChannel()
 
     @Bean
     fun inboundCommands(): MessageChannel = DirectChannel()
+
+    @Bean
+    fun campaignCommands(): MessageChannel = DirectChannel()
+
+    @Bean
+    fun characterCommands(): MessageChannel = DirectChannel()
+
+    @Bean
+    fun administrationCommands(): MessageChannel = DirectChannel()
 
     @Bean
     fun outboundEvents(): MessageChannel = DirectChannel()
@@ -58,14 +73,54 @@ class SpringBeans {
         return adapter
     }
 
+    @ServiceActivator(inputChannel = "inboundCommands")
+    @Bean
+    fun labelRouter(campaignCommands: MessageChannel, characterCommands: MessageChannel, administrationCommands: MessageChannel): LabelRouter {
+        return LabelRouter(campaignCommands, characterCommands, administrationCommands)
+    }
+
+    class LabelRouter(private val campaignCommands: MessageChannel, private val characterCommands: MessageChannel, private val administrationCommands: MessageChannel) {
+        @Router(inputChannel = "inboundCommands", defaultOutputChannel = "defaultOutputChannel")
+        fun route(@Header(name = MESSAGE_ROUTING_LABEL) label: String?): MessageChannel? {
+            val prefix = label?.lowercase()?.split('.')?.take(2)?.joinToString(".")
+            return when(prefix) {
+                "command.campaign" -> campaignCommands
+                "command.character" -> characterCommands
+                "command.administration" -> administrationCommands
+                else -> null
+            }
+        }
+    }
     class CommandProcessor() {
-        @ServiceActivator(inputChannel = "inboundCommands", outputChannel = "outboundEvents", requiresReply = "true")
-        fun handleMessage(command: Command) : Event {
+        @ServiceActivator(inputChannel = "campaignCommands", outputChannel = "outboundEvents", requiresReply = "true")
+        fun handleCampaignMessage(command: Command, @Headers headers: Map<String,Any>) : Event {
             // Spring transforms the AMQP message into a Command
             // process the command by writing to MongoDB
             // create an event and return it, where it will be picked up by the AMQP outbound adapter
-            println("handleMessage: $command")
-            return Event(command.foo)
+            println("handleCampaignMessage: $command")
+            return Event(command.label)
+        }
+        @ServiceActivator(inputChannel = "administrationCommands", outputChannel = "outboundEvents", requiresReply = "true")
+        fun handleAdministrationCommandsMessage(command: Command, @Headers headers: Map<String,Any>) : Event {
+            // Spring transforms the AMQP message into a Command
+            // process the command by writing to MongoDB
+            // create an event and return it, where it will be picked up by the AMQP outbound adapter
+            println("handleAdministrationCommandsMessage: $command")
+            return Event(command.label)
+        }
+
+        @ServiceActivator(inputChannel = "characterCommands", outputChannel = "outboundEvents", requiresReply = "true")
+        fun handleCharacterMessage(command: Command, @Headers headers: Map<String,Any>) : Event {
+            // Spring transforms the AMQP message into a Command
+            // process the command by writing to MongoDB
+            // create an event and return it, where it will be picked up by the AMQP outbound adapter
+            println("handleCharacterMessage: $command")
+            return Event(command.label)
+        }
+
+        @ServiceActivator(inputChannel = "defaultOutputChannel")
+        fun handleOrphanedMessage(@Headers headers: Map<String,Any>) {
+            println("handleOrphanedMessage: $headers")
         }
     }
 

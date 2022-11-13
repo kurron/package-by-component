@@ -23,6 +23,6 @@ public class CucumberTestContextConfiguration {
     @DynamicPropertySource
     static void calledBeforeSpringButAfterTestcontainers(DynamicPropertyRegistry registry) {
         LOGGER.debug("calledBeforeSpringButAfterTestcontainers called.");
-        //Containers.registerContainerCoordinates(registry);
+        Containers.registerContainerCoordinates(registry);
     }
 }

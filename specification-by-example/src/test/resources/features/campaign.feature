@@ -2,12 +2,12 @@ Ability: Create New Campaign
 
   Gary is a Game Master (GM) who is creating a new campaign for his friends. He is used to following the pen and paper Campaign Planning Form and wants the same level of guidance in the online system.
 
-  @wip
+  @ronbo
   Scenario: Campaign Name
   In order to create a valid campaign (valuable outcome), Gary (role in the domain) needs to assign a name to the campaign (domain-level work).
 
-    Given Gary is creating a new campaign
-    When Gary provided a campaign name
+    Given Gary has started creating a new campaign
+    When Gary provides the campaign name
     Then the campaign is assigned the specified name
 
   @wip
