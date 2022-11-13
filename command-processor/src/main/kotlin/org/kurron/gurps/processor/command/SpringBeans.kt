@@ -73,7 +73,6 @@ class SpringBeans {
         return adapter
     }
 
-    @ServiceActivator(inputChannel = "inboundCommands")
     @Bean
     fun labelRouter(campaignCommands: MessageChannel, characterCommands: MessageChannel, administrationCommands: MessageChannel): LabelRouter {
         return LabelRouter(campaignCommands, characterCommands, administrationCommands)
@@ -82,8 +81,7 @@ class SpringBeans {
     class LabelRouter(private val campaignCommands: MessageChannel, private val characterCommands: MessageChannel, private val administrationCommands: MessageChannel) {
         @Router(inputChannel = "inboundCommands", defaultOutputChannel = "defaultOutputChannel")
         fun route(@Header(name = MESSAGE_ROUTING_LABEL) label: String?): MessageChannel? {
-            val prefix = label?.lowercase()?.split('.')?.take(2)?.joinToString(".")
-            return when(prefix) {
+            return when (label?.lowercase()?.split('.')?.take(2)?.joinToString(".")) {
                 "command.campaign" -> campaignCommands
                 "command.character" -> characterCommands
                 "command.administration" -> administrationCommands
