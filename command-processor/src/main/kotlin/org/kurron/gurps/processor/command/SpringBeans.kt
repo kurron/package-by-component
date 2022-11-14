@@ -1,8 +1,6 @@
 package org.kurron.gurps.processor.command
 
-import org.kurron.gurps.shared.Command
-import org.kurron.gurps.shared.Event
-import org.kurron.gurps.shared.SharedConstants
+import org.kurron.gurps.shared.*
 import org.kurron.gurps.shared.SharedConstants.Companion.MESSAGE_ROUTING_LABEL
 import org.springframework.amqp.core.*
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
@@ -12,11 +10,13 @@ import org.springframework.amqp.support.converter.MessageConverter
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.integration.amqp.inbound.AmqpInboundChannelAdapter
+import org.springframework.integration.amqp.inbound.AmqpInboundGateway
 import org.springframework.integration.amqp.outbound.AmqpOutboundEndpoint
 import org.springframework.integration.annotation.Router
 import org.springframework.integration.annotation.ServiceActivator
+import org.springframework.integration.annotation.Splitter
 import org.springframework.integration.channel.DirectChannel
+import org.springframework.integration.router.PayloadTypeRouter
 import org.springframework.messaging.MessageChannel
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Headers
@@ -27,9 +27,19 @@ import java.time.Instant
 class SpringBeans {
     @Bean
     fun defaultOutputChannel(): MessageChannel = DirectChannel()
+    @Bean
+    fun amqpReplyChannel(): MessageChannel = DirectChannel()
 
     @Bean
-    fun inboundCommands(): MessageChannel = DirectChannel()
+    fun amqpRequestChannel(): MessageChannel = DirectChannel()
+
+    @Bean
+    fun toSplitMessagesChannel(): MessageChannel = DirectChannel()
+    @Bean
+    fun routeSplitMessagesChannel(): MessageChannel = DirectChannel()
+
+    @Bean
+    fun outboundCommands(): MessageChannel = DirectChannel()
 
     @Bean
     fun campaignCommands(): MessageChannel = DirectChannel()
@@ -66,20 +76,28 @@ class SpringBeans {
     @Bean
     fun messageConverter(): MessageConverter = Jackson2JsonMessageConverter()
 
+    // any returned values from the services are routed to the AMQP caller via his reply-to exchange.
     @Bean
-    fun commandConsumer(listenerContainer: SimpleMessageListenerContainer, inboundCommands: MessageChannel): AmqpInboundChannelAdapter {
-        val adapter = AmqpInboundChannelAdapter(listenerContainer)
-        adapter.outputChannel = inboundCommands
+    fun commandGateway(listenerContainer: SimpleMessageListenerContainer,
+                       amqpRequestChannel: MessageChannel,
+                       amqpReplyChannel: MessageChannel,
+                       messageConverter: MessageConverter): AmqpInboundGateway {
+        val adapter = AmqpInboundGateway(listenerContainer)
+        adapter.setRequestChannel(amqpRequestChannel)
+        adapter.setReplyChannel(amqpReplyChannel)
+        adapter.setMessageConverter(messageConverter)
         return adapter
     }
 
     @Bean
-    fun labelRouter(campaignCommands: MessageChannel, characterCommands: MessageChannel, administrationCommands: MessageChannel): LabelRouter {
-        return LabelRouter(campaignCommands, characterCommands, administrationCommands)
+    fun inboundLabelRouter(campaignCommands: MessageChannel, characterCommands: MessageChannel, administrationCommands: MessageChannel): InboundLabelRouter {
+        return InboundLabelRouter(campaignCommands, characterCommands, administrationCommands)
     }
 
-    class LabelRouter(private val campaignCommands: MessageChannel, private val characterCommands: MessageChannel, private val administrationCommands: MessageChannel) {
-        @Router(inputChannel = "inboundCommands", defaultOutputChannel = "defaultOutputChannel")
+    class InboundLabelRouter(private val campaignCommands: MessageChannel,
+                             private val characterCommands: MessageChannel,
+                             private val administrationCommands: MessageChannel) {
+        @Router(inputChannel = "amqpRequestChannel", defaultOutputChannel = "defaultOutputChannel")
         fun route(@Header(name = MESSAGE_ROUTING_LABEL) label: String?): MessageChannel? {
             return when (label?.lowercase()?.split('.')?.take(2)?.joinToString(".")) {
                 "command.campaign" -> campaignCommands
@@ -89,14 +107,31 @@ class SpringBeans {
             }
         }
     }
-    class CommandProcessor() {
-        @ServiceActivator(inputChannel = "campaignCommands", outputChannel = "outboundEvents", requiresReply = "true")
-        fun handleCampaignMessage(command: Command, @Headers headers: Map<String,Any>) : Event {
+
+    @ServiceActivator(inputChannel = "routeSplitMessagesChannel")
+    @Bean
+    fun payloadTypeRouter() : PayloadTypeRouter {
+        val router = PayloadTypeRouter()
+        router.setDefaultOutputChannelName("defaultOutputChannel")
+        router.setChannelMapping(Campaign::class.qualifiedName, "amqpReplyChannel")
+        router.setChannelMapping(Event::class.qualifiedName, "outboundEvents")
+        return router
+    }
+    class CommandProcessor {
+        @ServiceActivator(inputChannel = "campaignCommands", outputChannel = "toSplitMessagesChannel", requiresReply = "true")
+        fun handleCampaignMessage(command: Command, @Headers headers: Map<String, Any>): CampaignReply {
             // Spring transforms the AMQP message into a Command
             // process the command by writing to MongoDB
             // create an event and return it, where it will be picked up by the AMQP outbound adapter
             println("handleCampaignMessage: $command")
-            return Event(command.label)
+            val campaign = Campaign(command.label, "http://gurps.example.com/campaign/1")
+            val event = Event("event.campaign")
+            return CampaignReply(campaign,event)
+        }
+
+        @Splitter(inputChannel = "toSplitMessagesChannel", outputChannel = "routeSplitMessagesChannel")
+        fun split(toSplit: CampaignReply): List<Any> {
+            return listOf(toSplit.campaign,toSplit.event)
         }
         @ServiceActivator(inputChannel = "administrationCommands", outputChannel = "outboundEvents", requiresReply = "true")
         fun handleAdministrationCommandsMessage(command: Command, @Headers headers: Map<String,Any>) : Event {
