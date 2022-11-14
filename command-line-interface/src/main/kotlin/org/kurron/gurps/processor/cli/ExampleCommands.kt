@@ -41,15 +41,9 @@ class ExampleCommands(private val amqp: AmqpTemplate) {
                 message.messageProperties.deliveryMode = MessageDeliveryMode.NON_PERSISTENT
                 message.messageProperties.appId = "GURPS CLI"
                 message.messageProperties.type = "command.$type.new"
-                message.messageProperties.userId = "Gary"
+                // message.messageProperties.userId = "Gary"
                 return message
             }
-
-/*
-            override fun postProcessMessage(message: Message, correlation: Correlation?, exchange: String?, routingKey: String?): Message {
-                return super.postProcessMessage(message, correlation ?: CorrelationData(), exchange, routingKey)
-            }
-*/
         }
         val command = Command(label = "command.$type.new")
         val response = amqp.convertSendAndReceive(COMMAND_EXCHANGE_NAME, COMMAND_ROUTING_KEY, command, messagePostProcessor)

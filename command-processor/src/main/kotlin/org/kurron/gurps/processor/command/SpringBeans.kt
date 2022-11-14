@@ -57,23 +57,6 @@ class SpringBeans {
     fun outboundDocuments(): MessageChannel = DirectChannel()
 
     @Bean
-    fun commandQueue(): Queue = QueueBuilder.nonDurable(SharedConstants.COMMAND_QUEUE_NAME).build()
-
-    @Bean
-    fun commandExchange(): Exchange = ExchangeBuilder.directExchange(SharedConstants.COMMAND_EXCHANGE_NAME).durable(false).build()
-
-    @Bean
-    fun commandBinding(commandQueue: Queue, commandExchange: Exchange): Binding = BindingBuilder.bind(commandQueue).to(commandExchange).with(SharedConstants.COMMAND_ROUTING_KEY).noargs()
-
-    @Bean
-    fun commandContainer(connectionFactory: ConnectionFactory, commandQueue: Queue): SimpleMessageListenerContainer {
-        val container = SimpleMessageListenerContainer(connectionFactory)
-        container.setQueues(commandQueue)
-        container.setConcurrentConsumers(2)
-        return container
-    }
-
-    @Bean
     fun messageConverter(): MessageConverter = Jackson2JsonMessageConverter()
 
     // any returned values from the services are routed to the AMQP caller via his reply-to exchange.
@@ -161,25 +144,12 @@ class SpringBeans {
     fun commandProcessor(): CommandProcessor = CommandProcessor()
 
     @Bean
-    fun eventQueue(): Queue = QueueBuilder.nonDurable(SharedConstants.EVENT_QUEUE_NAME).build()
-
-    @Bean
-    fun eventExchange(): Exchange = ExchangeBuilder.fanoutExchange(SharedConstants.EVENT_EXCHANGE_NAME).durable(false).build()
-
-    @Bean
-    fun eventBinding(eventQueue: Queue, eventExchange: Exchange): Binding = BindingBuilder.bind(eventQueue).to(eventExchange).with(SharedConstants.EVENT_ROUTING_KEY).noargs()
-
-
-    // This works because AmqpOutboundEndpoint is a MessageHandler
-    @Bean
     @ServiceActivator(inputChannel = "outboundEvents")
     fun eventsOutbound(rabbitMQ: AmqpTemplate): AmqpOutboundEndpoint {
+        // This works because AmqpOutboundEndpoint is a MessageHandler
         val outbound = AmqpOutboundEndpoint(rabbitMQ)
         outbound.setExchangeName(SharedConstants.EVENT_EXCHANGE_NAME)
         outbound.setRoutingKey(SharedConstants.EVENT_ROUTING_KEY)
         return outbound
     }
-
-    @Bean
-    fun fireOffMessage(template: AmqpTemplate): CommandLineRunner = CommandLineRunner { template.convertAndSend(SharedConstants.COMMAND_ROUTING_KEY, Command(Instant.now().toString())) }
 }
