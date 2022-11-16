@@ -35,13 +35,7 @@ class SpringBeans {
     fun routeSplitMessagesChannel(): MessageChannel = DirectChannel()
 
     @Bean
-    fun outboundCommands(): MessageChannel = DirectChannel()
-
-    @Bean
     fun outboundEvents(): MessageChannel = DirectChannel()
-
-    @Bean
-    fun outboundDocuments(): MessageChannel = DirectChannel()
 
     @Bean
     fun messageConverter(): MessageConverter = Jackson2JsonMessageConverter()
