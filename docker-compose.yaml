@@ -7,7 +7,7 @@ services:
       - back-tier
     ports:
       - "5672:5672"
-      - "15672"
+      - "15672:15672"
     tmpfs:
       - /var/lib/rabbitmq
     environment:

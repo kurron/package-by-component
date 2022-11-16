@@ -1,26 +1,11 @@
 package org.kurron.gurps.processor.command
 
 import org.kurron.gurps.shared.*
-import org.kurron.gurps.shared.SharedConstants.Companion.MESSAGE_ROUTING_LABEL
 import org.springframework.amqp.core.*
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
-import org.springframework.amqp.support.converter.MessageConverter
-import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.integration.amqp.inbound.AmqpInboundGateway
-import org.springframework.integration.amqp.outbound.AmqpOutboundEndpoint
-import org.springframework.integration.annotation.Router
-import org.springframework.integration.annotation.ServiceActivator
-import org.springframework.integration.annotation.Splitter
-import org.springframework.integration.channel.DirectChannel
-import org.springframework.integration.router.PayloadTypeRouter
-import org.springframework.messaging.MessageChannel
-import org.springframework.messaging.handler.annotation.Header
-import org.springframework.messaging.handler.annotation.Headers
-import java.time.Instant
 
 /**
  * This object holds configuration beans related to AMQP setup.
