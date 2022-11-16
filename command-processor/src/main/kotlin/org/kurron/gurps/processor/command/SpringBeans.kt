@@ -41,14 +41,6 @@ class SpringBeans {
     @Bean
     fun outboundCommands(): MessageChannel = DirectChannel()
 
-    @Bean
-    fun campaignCommands(): MessageChannel = DirectChannel()
-
-    @Bean
-    fun characterCommands(): MessageChannel = DirectChannel()
-
-    @Bean
-    fun administrationCommands(): MessageChannel = DirectChannel()
 
     @Bean
     fun outboundEvents(): MessageChannel = DirectChannel()
@@ -103,18 +95,6 @@ class SpringBeans {
         return router
     }
 
-    @Splitter(inputChannel = "toSplitMessagesChannel", outputChannel = "routeSplitMessagesChannel")
-    fun campaignSplitter(toSplit: CampaignReply): List<Any> {
-        return listOf(toSplit.campaign,toSplit.event)
-    }
-    @Splitter(inputChannel = "toSplitMessagesChannel", outputChannel = "routeSplitMessagesChannel")
-    fun characterSplitter(toSplit: CharacterReply): List<Any> {
-        return listOf(toSplit.character,toSplit.event)
-    }
-    @Splitter(inputChannel = "toSplitMessagesChannel", outputChannel = "routeSplitMessagesChannel")
-    fun characterSplitter(toSplit: AdministrationReply): List<Any> {
-        return listOf(toSplit.administration,toSplit.event)
-    }
     @ServiceActivator(inputChannel = "defaultOutputChannel")
     fun handleOrphanedMessage(@Headers headers: Map<String,Any>) {
         println("handleOrphanedMessage: $headers")
@@ -129,12 +109,4 @@ class SpringBeans {
         return outbound
     }
 
-    @Bean
-    fun administrationCommandProcessor(): AdministrationCommandProcessor = AdministrationCommandProcessor()
-
-    @Bean
-    fun campaignCommandProcessor(): CampaignCommandProcessor = CampaignCommandProcessor()
-
-    @Bean
-    fun characterCommandProcessor(): CharacterCommandProcessor = CharacterCommandProcessor()
 }
