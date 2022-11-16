@@ -1,11 +1,8 @@
 package org.kurron.gurps.processor.command
 
-import org.kurron.gurps.processor.command.administration.AdministrationCommandProcessor
-import org.kurron.gurps.processor.command.campaign.CampaignCommandProcessor
-import org.kurron.gurps.processor.command.character.CharacterCommandProcessor
 import org.kurron.gurps.shared.*
 import org.kurron.gurps.shared.SharedConstants.Companion.MESSAGE_ROUTING_LABEL
-import org.springframework.amqp.core.*
+import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.amqp.support.converter.MessageConverter
@@ -15,7 +12,6 @@ import org.springframework.integration.amqp.inbound.AmqpInboundGateway
 import org.springframework.integration.amqp.outbound.AmqpOutboundEndpoint
 import org.springframework.integration.annotation.Router
 import org.springframework.integration.annotation.ServiceActivator
-import org.springframework.integration.annotation.Splitter
 import org.springframework.integration.channel.DirectChannel
 import org.springframework.integration.router.PayloadTypeRouter
 import org.springframework.messaging.MessageChannel
@@ -41,7 +37,6 @@ class SpringBeans {
     @Bean
     fun outboundCommands(): MessageChannel = DirectChannel()
 
-
     @Bean
     fun outboundEvents(): MessageChannel = DirectChannel()
 
@@ -65,19 +60,15 @@ class SpringBeans {
     }
 
     @Bean
-    fun inboundLabelRouter(campaignCommands: MessageChannel, characterCommands: MessageChannel, administrationCommands: MessageChannel): InboundLabelRouter {
-        return InboundLabelRouter(campaignCommands, characterCommands, administrationCommands)
-    }
+    fun inboundLabelRouter(): InboundLabelRouter = InboundLabelRouter()
 
-    class InboundLabelRouter(private val campaignCommands: MessageChannel,
-                             private val characterCommands: MessageChannel,
-                             private val administrationCommands: MessageChannel) {
+    class InboundLabelRouter() {
         @Router(inputChannel = "amqpRequestChannel", defaultOutputChannel = "defaultOutputChannel")
-        fun route(@Header(name = MESSAGE_ROUTING_LABEL) label: String?): MessageChannel? {
+        fun route(@Header(name = MESSAGE_ROUTING_LABEL) label: String?): String? {
             return when (label?.lowercase()?.split('.')?.take(2)?.joinToString(".")) {
-                "command.campaign" -> campaignCommands
-                "command.character" -> characterCommands
-                "command.administration" -> administrationCommands
+                "command.campaign" -> "campaignCommands"
+                "command.character" -> "characterCommands"
+                "command.administration" -> "administrationCommands"
                 else -> null
             }
         }
