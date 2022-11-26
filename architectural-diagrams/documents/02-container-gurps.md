@@ -33,5 +33,14 @@ The character service manages all things related to campaigns, including creatio
 ![](embed:character-service)
 
 ### Asset Service
-The asset service manages all things related to campaigns, including creation, modification and deletion. Unlike other services, the asset service supports bulk operations, including uploading of data files containing assets to be imported into the system.
+The asset service manages all things related to campaigns, including creation, modification and deletion. Unlike other services, the asset service supports bulk operations, including uploading of data files containing assets to be imported into the system. Types of assets in the system include:
+* generic non-player characters, e.g. librarian
+* character advantages, e.g. Danger Sense
+* character disadvantages, e.g. Bad Sight
+* skills, e.g. Brawling
+* armor, e.g. Ballistic Vest
+* shields, e.g. Medium Shield
+* weapons, e.g. Sniper Rifle
+* physical feats, e.g. climbing up a tree
+* 
 ![](embed:asset-service)
