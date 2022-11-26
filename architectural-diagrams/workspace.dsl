@@ -32,13 +32,51 @@ workspace "GURPS Online" "Second" {
         adam = Person "Adam" {
             description "System Administrator"
         }
+        cli = softwareSystem "Bulk modification Tool" {
+            description "Online version of GURPS release 4"
+            perspectives {
+            }
+            adam -> this "bulk uploads assets" "JSON file" "TAG" {
+            }
+        }
         gurps = softwareSystem "GURPS Online" {
             description "Online version of GURPS release 4"
             perspectives {
             }
+            backend = container "Backend Services" {
+                description "Services used by the UI, broken up by feature"
+                technology "Spring Cloud Stream"
+                tags "tag"
+                perspectives {
+                }
+                userFeature = component "User Feature" {
+                    description "Module providing user management features"
+                    technology "Spring Cloud Stream"
+                    perspectives {
+                    }
+                }
+                campaignFeature = component "Campaign Feature" {
+                    description "Module providing campaign management features"
+                    technology "Spring Cloud Stream"
+                    perspectives {
+                    }
+                }
+                characterFeature = component "Character Feature" {
+                    description "Module providing character management features"
+                    technology "Spring Cloud Stream"
+                    perspectives {
+                    }
+                }
+                assetFeature = component "Asset Feature" {
+                    description "Module providing asset management features"
+                    technology "Spring Cloud Stream"
+                    perspectives {
+                    }
+                }
+            }
             apiGateway = container "API Gateway" {
                 description "GURPS REST APIs"
-                technology "Spring GraphQL?"
+                technology "Spring Cloud API Gateway"
                 tags "tag"
                 perspectives {
                 }
@@ -49,83 +87,46 @@ workspace "GURPS Online" "Second" {
                     }
                 }
             }
-            userStore = container "User Store" {
-                description "Some description"
+            database = container "GURPS Database" {
+                description "Persistent storage of GURPS data"
                 technology "MongoDB"
                 tags "DataStore"
                 perspectives {
                 }
-                userInProgressCollection = component "In-progress Collection" {
-                    description "User information still being modified"
+                component "User Tenant" {
+                    description "User information in its own space"
                     technology "MongoDB"
                     perspectives {
                     }
+                    userFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    }
                 }
-                userCollection = component "User Collection" {
-                    description "Read-only User information"
+                component "Campaign Tenant" {
+                    description "Campaign information in its own space"
                     technology "MongoDB"
                     perspectives {
                     }
+                    campaignFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    }
                 }
-            }
-            container "Asset Store" {
-                description "Some description"
-                technology "MongoDB"
-                tags "DataStore"
-                perspectives {
-                }
-                assetInProgressCollection = component "In-progress Collection" {
-                    description "Asset information still being modified"
+                component "Character Tenant" {
+                    description "Character information in its own space"
                     technology "MongoDB"
                     perspectives {
                     }
+                    characterFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    }
                 }
-                assetCollection = component "Asset Collection" {
-                    description "Read-only Asset information"
+                component "Asset Tenant" {
+                    description "Asset information in its own space"
                     technology "MongoDB"
                     perspectives {
                     }
-                }
-            }
-            container "Campaign Store" {
-                description "Some description"
-                technology "MongoDB"
-                tags "DataStore"
-                perspectives {
-                }
-                campaignInProgressCollection = component "In-progress Campaign" {
-                    description "Campaign information still being modified"
-                    technology "MongoDB"
-                    perspectives {
-                    }
-                }
-                campaignCollection = component "Campaign Collection" {
-                    description "Read-only Campaign information"
-                    technology "MongoDB"
-                    perspectives {
+                    assetFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
             }
-            container "Character Store" {
-                description "Some description"
-                technology "MongoDB"
-                tags "DataStore"
-                perspectives {
-                }
-                characterInProgressCollection = component "In-progress Characters" {
-                    description "Character information still being modified"
-                    technology "MongoDB"
-                    perspectives {
-                    }
-                }
-                characterCollection = component "Character Collection" {
-                    description "Read-only Character information"
-                    technology "MongoDB"
-                    perspectives {
-                    }
-                }
-            }
-            gui = container "Web User Interface" {
+            frontend = container "Web User Interface" {
                 description "Graphical user interface"
                 technology "HTML, Javascript"
                 tags "WebUI"
@@ -162,130 +163,7 @@ workspace "GURPS Online" "Second" {
                 administratorUI -> apiGateway "sends request" "JSON over HTTP" "json-over-http" {
                 }
             }
-            userService = container "User Service" {
-                description "User management functions"
-                technology "Kotlin, Spring Boot"
-                tags "Microservice"
-                perspectives {
-                }
-                userCommandProcessor = component "Command Processor" {
-                    description "Handles command messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> userInProgressCollection "saves new version to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                userEventProcessor = component "Event Processor" {
-                    description "Handles event messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> userCollection "saves user changes to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                component "Query Processor" {
-                    description "Handles query messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> userCollection "loads users from" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-            }
-            campaignService = container "Campaign Service" {
-                description "Campaign management functions"
-                technology "Kotlin, Spring Boot"
-                tags "Microservice"
-                perspectives {
-                }
-                campaignCommandProcessor = component "Command Processor" {
-                    description "Handles command messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> campaignInProgressCollection "saves new version to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                campaignEventProcessor = component "Event Processor" {
-                    description "Handles event messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> campaignCollection "saves campaign changes to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                campaignQueryProcessor = component "Query Processor" {
-                    description "Handles query messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> campaignCollection "loads campaigns from" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-            }
-            characterService = container "Character Service" {
-                description "Character management functions"
-                technology "Kotlin, Spring Boot"
-                tags "Microservice"
-                perspectives {
-                }
-                characterCommandProcessor = component "Command Processor" {
-                    description "Handles command messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> characterInProgressCollection "saves new version to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                characterEventProcessor = component "Event Processor" {
-                    description "Handles event messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> characterCollection "saves campaign changes to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                characterQueryProcessor = component "Query Processor" {
-                    description "Handles query messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> characterCollection "loads characters from" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-            }
-            assetService = container "Assets Service" {
-                description "Asset management functions"
-                technology "Kotlin, Spring Boot"
-                tags "Microservice"
-                perspectives {
-                }
-                component "Command Processor" {
-                    description "Handles command messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> assetInProgressCollection "saves new version to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                component "Event Processor" {
-                    description "Handles event messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> assetCollection "saves asset changes to" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-                component "Query Processor" {
-                    description "Handles query messages"
-                    technology "Kotlin"
-                    perspectives {
-                    }
-                    this -> assetCollection "loads assets from" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-            }
+
             messageBroker = container "Message Broker" {
                 description "Messaging fabric"
                 technology "RabbitMQ"
@@ -293,10 +171,8 @@ workspace "GURPS Online" "Second" {
                 perspectives {
                 }
                 apiGateway -> this "sends messages to" "JSON over AMQP" "json-over-amqp"
-                this -> userService "sends messages to" "JSON over AMQP" "json-over-amqp"
-                this -> assetService "sends messages to" "JSON over AMQP" "json-over-amqp"
-                this -> characterService "sends messages to" "JSON over AMQP" "json-over-amqp"
-                this -> campaignService "sends messages to" "JSON over AMQP" "json-over-amqp"
+                this -> backend "sends messages to" "JSON over AMQP" "json-over-amqp"
+                cli -> this "sends messages to" "JSON over AMQP" "json-over-amqp"
                 component "Point-to-Multipoint Messages" {
                     description "Fanout Exchange, routing messages to all queues"
                     technology "RabbitMQ"
@@ -311,33 +187,38 @@ workspace "GURPS Online" "Second" {
                 }
             }
         }
+
         production = deploymentEnvironment "production" {
             deploymentNode "MongoDB Cluster" {
                 description "MongoDB fault tolerant cluster"
                 technology "Hosted MongoDB"
+                containerInstance database
             }
             deploymentNode "RabbitMQ Cluster" {
                 description "RabbitMQ fault tolerant cluster"
                 technology "Hosted RabbitMQ"
-                //containerInstance pointToMultipoint
+                containerInstance messageBroker
             }
             productionKubernetes = deploymentNode "Kubernetes Cluster" {
                 description "On-prem Kubernetes cluster"
                 technology "K3S, Rancher"
-                deploymentNode "Command Processor Pods" {
+                deploymentNode "Backend Pods" {
                     description "On-prem Kubernetes cluster"
                     technology "Kubernetes"
                     instances 8
+                    containerInstance backend
                 }
-                deploymentNode "Event Processor Pods" {
+                deploymentNode "Frontend Pods" {
                     description "On-prem Kubernetes cluster"
                     technology "Kubernetes"
                     instances 8
+                    containerInstance frontend
                 }
-                deploymentNode "Query Processor Pods" {
+                deploymentNode "API Gateway Pods" {
                     description "On-prem Kubernetes cluster"
                     technology "Kubernetes"
                     instances 16
+                    containerInstance apiGateway
                 }
             }
         }
@@ -410,43 +291,25 @@ workspace "GURPS Online" "Second" {
             autoLayout
         }
 
+        component "backend" "backend" "Double click on + to expand view" {
+            title "Loosely coupled monolith"
+            include *
+            autoLayout
+        }
+
         component "messageBroker" "message-broker" "Double click on + to expand view" {
             title "Message Broker"
             include *
             autoLayout
         }
 
-        component "userService" "user-service" "Double click on + to expand view" {
-            title "User Service Collaborators"
+        component "database" "database" "Double click on + to expand view" {
+            title "Data segregated by feature"
             include *
             autoLayout
         }
 
-        component "campaignService" "campaign-service" "Double click on + to expand view" {
-            title "Campaign Service Collaborators"
-            include *
-            autoLayout
-        }
-
-        component "characterService" "character-service" "Double click on + to expand view" {
-            title "Character Service Collaborators"
-            include *
-            autoLayout
-        }
-
-        component "assetService" "asset-service" "Double click on + to expand view" {
-            title "Asset Service Collaborators"
-            include *
-            autoLayout
-        }
-
-        component "userStore" "user-store" "Double click on + to expand view" {
-            title "User Storage Collections"
-            include *
-            autoLayout
-        }
-
-        component "gui" "gui" "Double click on + to expand view" {
+        component "frontend" "frontend" "Double click on + to expand view" {
             title "Graphical User Interface components"
             include *
             autoLayout

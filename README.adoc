@@ -7,10 +7,18 @@ ifdef::env-github[]
 endif::[]
 
 == Overview
-This project is an implementation of the GURPS 4th Edition rules using an idea from link:https://youtu.be/5OjqD-ow8GE[Modular Monoliths] where implementation of components live in their own package, exporting on a single public interface.
+This project is an implementation of the GURPS 4th Edition rules using an idea from link:https://youtu.be/5OjqD-ow8GE[Modular Monoliths] where implementation of components live in their own package, exporting a single public interface. The reason I've created this project is because I've worked on systems that started small, became very successful and became painful to maintain as they grew. One was successfully rewritten but many failed the same exercise. What I want to understand is how to create a monolith that is easier to tease apart into microservices when the time comes. GURPS is my proxy for a product manager and is a domain I find interesting.
 
-== Guidebook
-// Details about this project are contained in the link:guidebook/guidebook.adoc[guidebook] and should be considered mandatory reading prior to contributing to this project.
+* all code in a singular project, built by Maven
+* features are used to define boundaries
+* each boundary lives in its own Maven module, generating a library
+* inter-feature communication is done entirely via messaging (Event messages)
+* state change requests done via Command messages
+* each boundary has its own logical datastore (schema, tenancy, etc.)
+* leverage Spring projects, reducing the amount of code to be written
+* leverage new features of Spring 3 release, observability, etc.
+* Kotlin in production code
+* Java 17 in test code
 
 == Prerequisites
 * JDK 17 or greater
@@ -24,6 +32,12 @@ This project is an implementation of the GURPS 4th Edition rules using an idea f
 
 === Architectural Diagrams
 `docker run --pull --interactive --tty --rm --name structurizr --publish 8080:8080 --env STRUCTURIZR_WORKSPACE_PATH=architectural-diagrams --volume $(pwd):/usr/local/structurizr structurizr/lite:latest`
+
+=== Guidebook
+// Details about this project are contained in the link:guidebook/guidebook.adoc[guidebook] and should be considered mandatory reading prior to contributing to this project.
+
+=== Specification By Example
+The Cucumber tests are...
 
 == Troubleshooting
 
@@ -41,3 +55,6 @@ This project is an implementation of the GURPS 4th Edition rules using an idea f
 * https://youtu.be/Mw6ZilAl3uU[Learn how to build Cloud Native applications using Spring Boot and Kubernetes]
 * https://youtu.be/LGOhejS1Itc[Kubernetes Native Java by Josh Long @ Spring I/O 2022]
 * https://youtu.be/Xe7K1biKcs0[Spring Tips: Spring and Kubernetes, Redux (2022)]
+* https://youtu.be/48C-RsEu0BQ[Creating a Loosely Coupled Monolith]
+* https://youtu.be/Qi6TaIYprqc[Asynchronous Messaging in a Loosely Coupled Monolith]
+* https://youtu.be/tDlwu_Lmpx4[ZeroMQ and RabbitMQ Messaging for agility and scalability Allen Holub HD]

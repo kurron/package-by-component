@@ -1,11 +1,11 @@
 ## Primary Components
-GURPS Online is implemented as independent services, interacting with each other via a message broker. 
+GURPS Online is implemented as a loosely coupled monolith with feature boundaries interacting with each other via a message broker. 
 
 ![](embed:container-gurps)
 
 ### Web User Interface
 The user interface ...
-![](embed:gui)
+![](embed:frontend)
 
 ### API Gateway
 The API gateway is the "front door" into the system for the web clients.  Its job is to translate the synchronous HTTP requests into the asynchronous messages that the various services react to.
@@ -22,15 +22,12 @@ Command and Query messages are intended for a specific service while Events have
 
 ### User Service
 The user service manages all things related to GURPS Online users, including creation, modification and deletion. A user must exist prior to interacting with the system and is currently managed by the administrator. The service also handles authentication requests made by the UI.
-![](embed:user-service)
 
 ### Campaign Service
 The campaign service manages all things related to campaigns, including creation, modification and deletion.
-![](embed:campaign-service)
 
 ### Character Service
 The character service manages all things related to campaigns, including creation, modification and deletion.
-![](embed:character-service)
 
 ### Asset Service
 The asset service manages all things related to campaigns, including creation, modification and deletion. Unlike other services, the asset service supports bulk operations, including uploading of data files containing assets to be imported into the system. Types of assets in the system include:
@@ -43,4 +40,4 @@ The asset service manages all things related to campaigns, including creation, m
 * weapons, e.g. Sniper Rifle
 * physical feats, e.g. climbing up a tree
 * 
-![](embed:asset-service)
+![](embed:backend)
