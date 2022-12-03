@@ -1,0 +1,13 @@
+== Code
+. Describe implementation details for important/complex parts of the system
+. homegrown frameworks
+. WebMVC frameworks
+. approach to security
+. domain model
+. component frameworks
+. configuration mechanisms
+. architectural layering
+. exceptions and logging
+. how patterns and principals are implemented
+. short description of each element using diagrams as necessary
+. Technical people only

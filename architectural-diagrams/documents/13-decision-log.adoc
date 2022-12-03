@@ -1,0 +1,9 @@
+== Decision Log
+. Capture major decisions that have been made
+. Why did you choose technology/framework X over Y and Z?
+. How did you make the selection? PoC? Product evaluation?
+. Did corporate policy or architecture standards force you to select X?
+. Why did you choose the selected architecture?  What other options did you consider?
+. How do you know that the solution satisfies the major non-functional requirements?
+. Short paragraph describing each decision. Include a date of the decision?
+. Technical people only

@@ -1,0 +1,12 @@
+== Functional Overview
+. Highlight and summarize major functions of the software
+. Is it clear what the system actually does?
+. Is it clear which features, functions, use cases, user stories, etc are significant to the architecture and why?
+. Is it clear who the important users are (roles, actors, personas, etc) and how the system caters for their needs?
+. Is it clear that the above has been used to shape and define the architecture?
+. Is it clear what the system does from a process perspective?
+. What are the major processes and flows of information through the system?
+. Feel free to reference existing documentation
+. The goal is to provide an *overview*
+. Sequence diagram when discussing automated business processes is useful
+. Technical and non-technical people, both inside and outside the immediate development team

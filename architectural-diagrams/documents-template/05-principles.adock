@@ -1,0 +1,22 @@
+== Principles
+. Make it explicit what principles are being followed
+. Supply existing references, if they exist
+. Architectural layering strategy
+. No business logic in views
+. No database access in views
+. Use of interfaces
+. Always use an ORM
+. Dependency injection
+. The Hollywood principle
+. High cohesion, low coupling
+. Follow SOLID
+. DRY
+. Ensure all components are stateless (e.g. to ease scaling)
+. Prefer a rich domain model
+. Prefer an anemic domain model
+. Prefer stored procedures
+. Avoid stored procedures
+. Don't reinvent the wheel
+. Approaches to error handling, logging, etc
+. Buy rather than build
+. Technical people only

@@ -1,0 +1,11 @@
+== Data
+. Record anything that is important from the data perspective
+. What does the data model look like?
+. Where is data stored?
+. Who owns the data?
+. How much storage space is needed for the data?
+. Are there any requirements for long term archival?
+. Are there any requirements for log files and audit trails?
+. Are flat files being used for storage?
+. short description of each element using diagrams as necessary
+. Technical people only, including Operations

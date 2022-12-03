@@ -1,0 +1,11 @@
+== Operation and Support
+. Be explicit about to run, monitor and manage the software
+. Is it clear how the software provides the ability for Operations to monitor and manage the system?
+. Has is this achieved across all tiers of the architecture?
+. How can Operations diagnose problems?
+. Where are errors and information logged?
+. Do configuration changes require a restart?
+. Are there any manual housekeeping tasks that need to be performed on a regular basis?
+. Does old data need to be periodically archived?
+. A simple narrative should suffice here
+. Technical people only, including Operations

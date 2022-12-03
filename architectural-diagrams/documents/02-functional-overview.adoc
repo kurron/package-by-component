@@ -1,0 +1,30 @@
+== Functional Overview
+. Highlight and summarize major functions of the software
+. Is it clear what the system actually does?
+. Is it clear which features, functions, use cases, user stories, etc are significant to the architecture and why?
+. Is it clear who the important users are (roles, actors, personas, etc) and how the system caters for their needs?
+. Is it clear that the above has been used to shape and define the architecture?
+. Is it clear what the system does from a process perspective?
+. What are the major processes and flows of information through the system?
+. Feel free to reference existing documentation
+. The goal is to provide an *overview*
+. Sequence diagram when discussing automated business processes is useful
+. Technical and non-technical people, both inside and outside the immediate development team
+
+The goal of the system is make it easier for people who want to play GURPS to find worlds and campaigns of interest to them. To that end, everything in the system is searchable and has infinite lifetime. Players won't have to worry about a campaign disappearing on them because the author decided to delete one of his published worlds.
+
+=== Worlds and Campaigns
+Gary decides one day that he wants to create a world and a campaign within that world. Using GURPS Online, he'll be guided through a series of screens that helps with that process, including the selection of technology levels, government structures and geography.  He'll have access to a catalog of weapons, spells, armor and technologies to include in his campaign. These catalogs include content created by other game masters. Gary has the option to publish his works to the community for others to use, if he desires.
+
+=== Characters
+Penny uses the system to search for campaigns that sound interesting to her. She likes to search by genre, such as horror, but also keeps tabs on her favorite campaign creators, getting text and e-mail notification when new works are published. She also uses the system to see if a new group has formed to play any of the campaigns she is watching. Once she has joined a group, she creates a new character based on the world and campaign constraints.  GURPS Online will advise her if any of her existing characters are playable in the campaign, saving her the time to create one. When joining a new game, Penny will familiarize herself with the world by download the PDFs of relevant assets. She doesn't get access to the game master's notes of course, as that would spoil the fun. Only he can see his notes.
+
+=== Message Board
+While GURPS Online does not run games, we do provide a very basic message board where the community can find when a new game is starting up. We are not in the business of managing online abuse, the boards are very limited, only providing just enough information for players to decide if they want to reach out to game master for more details.
+
+=== System Housekeeping
+Adam is tasked with administering the system, including importing new assets, dealing with conduct violations and removing assets violating community policies. Adam sometimes has to go in and remove postings that violate the terms of service.
+
+=== Obtaining Assets
+GURPS Online uses https://ipfs.tech/[IPFS] to distribute assets, avoiding any content filtering that some governments do. We realize that we're only facilitating playing a game but we feel strongly enough that everyone should have access to fun that we're willing to use a relatively new technology to get the assets into the hands of players, regardless of politics.
+

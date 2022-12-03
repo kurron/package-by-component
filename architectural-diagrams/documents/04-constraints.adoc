@@ -1,0 +1,18 @@
+== Constraints
+. Summarize the constraints your are working in and some of the decisions that have been made for you
+. Time, budget and resources
+. Approved technology lists and technology constraints
+. Target deployment platform
+. Existing systems and integration standards
+. Local standards (e.g. development, coding, etc)
+. Public standards (e.g. HTTP, SOAP, XML, XML Schema, WSDL, etc)
+. Standard protocols
+. Standard message formats
+. Size of software development team
+. Skill profile of the development team
+. Nature of the software being build (et, tactical or strategic)
+. Political constraints
+. Use of internal intellectual property
+. Technical and non-technical people
+
+We're a small company with a limited development budget but we do expect that system to become increasingly popular. GURPS Online is built using as a loosely coupled monolith, meaning that there is a single code base but it is structured in such a way that parts of it can be moved out into its own system as needed. This keeps the initial development costs down while providing a path in the future for growth.  Our developers are skilled JVM programmers but we don't have the time or budget to create any bespoke frameworks for this solution. For that reason, the system is built using frameworks plucked from the Spring ecosystem. Further, we're using Kotlin running on contemporary JVM releases, giving us further productivity gains.

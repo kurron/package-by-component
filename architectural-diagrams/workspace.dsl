@@ -32,8 +32,9 @@ workspace "GURPS Online" "Second" {
         adam = Person "Adam" {
             description "System Administrator"
         }
-        cli = softwareSystem "Bulk modification Tool" {
-            description "Online version of GURPS release 4"
+        cli = softwareSystem "Command Line Interface" {
+            description "Bulk operation tool"
+            tags "CommandLine"
             perspectives {
             }
             adam -> this "bulk uploads assets" "JSON file" "TAG" {

@@ -1,0 +1,7 @@
+== Context
+. What is this software project/product/system all about?
+. What is it that is being built?
+. How does it fit into the existing environment? (e.g. systems, business processes, etc)
+. Who is using it? (users, roles, actors, personas, etc)
+. Context Diagram should be included
+. Technical and non-technical audience

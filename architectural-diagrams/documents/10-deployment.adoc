@@ -1,0 +1,13 @@
+== Deployment
+. Describe the mapping between software (containers) and the infrastructure.
+. How and where is the software installed and configured?
+. Is it clear how the software will be deployed across the infrastructure elements described in the Infrastructure Architecture section?
+. What are the options and have they been documented?
+. Is it understood how memory and CPU will be partitioned between the processes running on a single piece of infrastructure?
+. Are any containers/components running in an active-active, active-passive, hot-standby, cold-standby formation?
+. Has the deployment and rollback strategy been defined?
+. What happens in the event of a software or infrastructure failure?
+. Is it clear how data is replicated across sites?
+. Can use tables to show mapping between containers and infrastructure
+. Can use UML deployment diagrams
+. Can use color coding to designate runtime status (primary vs secondary, etc_

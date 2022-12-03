@@ -1,0 +1,22 @@
+== External Interfaces
+. What are the key external interfaces?
+.. system-to-system
+.. publicly exposed APIs
+.. exported files
+. Has each interface been thought about from a technical perspective?
+.. what is the technical definition of an interface?
+.. if messaging is being used, which queues and topics are components using to communicate?
+.. what format are the messages (e.g. plain text, Avro, JSON)?
+.. are they synchronous or asynchronous?
+.. are asynchronous messaging links guaranteed?
+.. are subscribers durable where necessary?
+.. can messages be received out of order and is this a problem?
+.. are interfaces idempotent?
+.. is the interface always available or do you need the cache data locally?
+.. how is performance/security/etc catered for?
+. Has each interface been thought about from a non-technical perspective?
+.. who has ownership of the interface?
+.. how often does the interface change and how is versioning handled?
+.. are there service-level agreements in place?
+. A paragraph on each interface covering this topics is sufficient
+. Technical people only

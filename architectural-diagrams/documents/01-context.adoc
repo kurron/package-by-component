@@ -1,0 +1,28 @@
+== Context
+GURPS Online is a new system, providing an online version of the traditional, paper based http://www.sjgames.com/gurps/resources/CampaignPlanning.pdf[campaign] and http://www.sjgames.com/gurps/resources/CharacterSheet.pdf[character] sheets. GURPS Online is intended to ease the creation of worlds, campaigns and characters, not run them.  Games will continue to be played by friends sitting around the kitchen table using the generated assets. GURPS Online is a departure from existing products the company sells so there is no integration with existing systems. It stands alone.
+
+Throughout the document, we reference a few people that help to describe the types of users of the system. First, we have Gary who is the Game Master interested in creating worlds and campaigns for his friends. Next, we have Penny who is a Player interested in creating characters compatible with Gary's campaigns. Finally, we have Adam who administrates the system, typically installing new assets and managing users.  The system is web based but does allow viewing of assets on mobile devices. Editing on mobile, however, is not supported.
+
+Gary has the responsibility of creating an entire world from his imagination as well as creating a story for characters to experience in that world. He is tasked with making several decisions, including:
+
+* the genre of the campaign, e.g. science fiction
+* the campaign style, e.g. realistic, cinematic
+* planes of existence
+* society type
+* technology level
+
+Penny has to make choices when creating her character, including:
+
+* race
+* skills
+* advantages
+* attribute point allocation
+
+Adam, using his bulk operation tool, is adding new assets to the system, including:
+
+* armor
+* weapons
+* skills
+* advantages
+
+WARNING: figure out how to embed the context diagaram

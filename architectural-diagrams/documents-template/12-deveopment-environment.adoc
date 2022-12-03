@@ -1,0 +1,13 @@
+== Development Environment
+. Summarize how new team members set up a development environment
+. Pre-requisite versions of software needed
+. Links to software downloads
+. Links to virtual machines
+. Environment variables
+. Host name entries
+. IDE configuration
+. Build and test instructions
+. Database population scripts
+. Username, passwords and certificates for connecting to services
+. Links to build servers
+. Technical people only, developers specifically
