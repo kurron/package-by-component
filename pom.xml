@@ -20,7 +20,6 @@
 		<repackage.classifier/>
 		<kotlin.version>1.7.21</kotlin.version>
 		<spring-cloud.version>2022.0.0-RC2</spring-cloud.version>
-		<spring-native.version>0.12.1</spring-native.version>
 		<spring-shell.version>3.0.0-M2</spring-shell.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
 		<build.native>false</build.native>
@@ -86,12 +85,15 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<modules>
-		<module>shared-components</module>
-        <module>specification-by-example</module>
-		<module>command-processor</module>
-		<module>event-processor</module>
-		<module>command-line-interface</module>
-		<module>kotlin-skeleton</module>
+		<module>asset-feature</module>
+		<!--
+                <module>shared-components</module>
+                <module>specification-by-example</module>
+                <module>command-processor</module>
+                <module>event-processor</module>
+                <module>command-line-interface</module>
+                <module>kotlin-skeleton</module>
+        -->
 	</modules>
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
@@ -106,6 +108,7 @@
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 				</configuration>
 			</plugin>
+<!--
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -119,6 +122,7 @@
 					</image>
 				</configuration>
 			</plugin>
+-->
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
@@ -144,6 +148,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+<!--
 			<plugin>
 				<groupId>org.hibernate.orm.tooling</groupId>
 				<artifactId>hibernate-enhance-maven-plugin</artifactId>
@@ -164,6 +169,7 @@
 					</execution>
 				</executions>
 			</plugin>
+-->
 		</plugins>
 	</build>
 
