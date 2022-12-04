@@ -94,6 +94,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<modules>
+		<module>shared-components</module>
 		<module>asset-feature</module>
 		<module>campaign-feature</module>
 		<module>character-feature</module>
