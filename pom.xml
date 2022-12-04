@@ -98,14 +98,8 @@
 		<module>campaign-feature</module>
 		<module>character-feature</module>
 		<module>gurps-online</module>
-		<!--
-                <module>shared-components</module>
-                <module>specification-by-example</module>
-                <module>command-processor</module>
-                <module>event-processor</module>
-                <module>command-line-interface</module>
-                <module>kotlin-skeleton</module>
-        -->
+		<module>specification-by-example</module>
+		<module>kotlin-skeleton</module>
 	</modules>
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
