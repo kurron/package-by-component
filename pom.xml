@@ -56,6 +56,15 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+		</dependency>
+	</dependencies>
+
+
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>
@@ -86,6 +95,9 @@
 	</pluginRepositories>
 	<modules>
 		<module>asset-feature</module>
+		<module>campaign-feature</module>
+		<module>character-feature</module>
+		<module>gurps-online</module>
 		<!--
                 <module>shared-components</module>
                 <module>specification-by-example</module>
