@@ -7,20 +7,14 @@
 		<artifactId>package-by-component</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>asset-feature</artifactId>
+	<artifactId>shared-components</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>asset-feature</name>
-	<description>Asset manipulation services</description>
+	<name>shared-components</name>
+	<description>DTOs and logic shared between feature modules</description>
 	<properties>
 		<spring-boot.build-image.skip>true</spring-boot.build-image.skip>
 	</properties>
 	<dependencies>
-		<!-- production dependencies -->
-		<dependency>
-			<groupId>org.kurron.gurps</groupId>
-			<artifactId>shared-components</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-reflect</artifactId>
@@ -33,11 +27,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-        <!-- test dependencies -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

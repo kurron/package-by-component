@@ -7,7 +7,7 @@
 		<artifactId>package-by-component</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>gurp-online</artifactId>
+	<artifactId>gurps-online</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>GURPS Online</name>
 	<description>Web version of the GURPS 4.0 role playing game</description>
@@ -250,6 +250,21 @@
         -->
 	</dependencies>
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<classifier>${repackage.classifier}</classifier>
+					<image>
+						<builder>paketobuildpacks/builder:tiny</builder>
+						<env>
+							<BP_NATIVE_IMAGE>${build.native}</BP_NATIVE_IMAGE>
+						</env>
+					</image>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<profiles>
