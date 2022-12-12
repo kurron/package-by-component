@@ -100,7 +100,9 @@
 		<module>character-feature</module>
 		<module>gurps-online</module>
 		<module>specification-by-example</module>
+<!--
 		<module>kotlin-skeleton</module>
+-->
 	</modules>
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
