@@ -1,4 +1,4 @@
-package org.kurron.gurps.shared.campaign
+package org.kurron.gurps.campaign
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -11,17 +11,16 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessageDeliveryMode
 import org.springframework.amqp.core.MessagePropertiesBuilder
-import org.springframework.http.MediaType
 
-data class InitializeCampaignCommand(@JsonProperty("payload") val payload: String,
-                                     @JsonProperty("label") val label: String = "command.asset.initialize-campaign",
-                                     @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "command", feature = "campaign"),
-                                     @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
+data class CampaignInitializedEvent(@JsonProperty("payload") val payload: String,
+                                    @JsonProperty("label") val label: String = "event.asset.campaign-initialized",
+                                    @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "event", feature = "campaign"),
+                                    @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
     companion object {
-        fun randomInstance() : InitializeCampaignCommand = InitializeCampaignCommand(payload = "foo")
+        fun randomInstance() : CampaignInitializedEvent = CampaignInitializedEvent(payload = "baz")
     }
 
-    fun toMessage(jackson: ObjectMapper): Message {
+    fun toMessage(jackson: ObjectMapper, correlationId: String): Message {
         val bytes = jackson.writeValueAsBytes(this)
         val now = Date.from(Instant.now())
         val type = "${structure.type}/${structure.feature};version=${structure.version}"
@@ -32,9 +31,9 @@ data class InitializeCampaignCommand(@JsonProperty("payload") val payload: Strin
                                                  .setTimestamp(now)
                                                  .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT)
                                                  .setType(type)
-                                                 .setContentType(MediaType.APPLICATION_JSON_VALUE)
-                                                 .setCorrelationId(id.toString())
+                                                 .setCorrelationId(correlationId)
                                                  .build()
         return MessageBuilder.withBody(bytes).andProperties(properties).build()
     }
+
 }

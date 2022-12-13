@@ -1,4 +1,4 @@
-package org.kurron.gurps.shared.asset
+package org.kurron.gurps.asset
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper

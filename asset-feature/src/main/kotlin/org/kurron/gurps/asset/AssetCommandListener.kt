@@ -3,8 +3,6 @@ package org.kurron.gurps.asset
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.UUID
 import org.kurron.gurps.shared.SharedConfiguration
-import org.kurron.gurps.shared.asset.AssetInitializedEvent
-import org.kurron.gurps.shared.asset.InitializeAssetResponse
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageListener
 import org.springframework.amqp.rabbit.core.RabbitOperations

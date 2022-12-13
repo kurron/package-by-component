@@ -1,11 +1,9 @@
 package org.kurron.gurps.campaign
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.util.*
+import java.util.UUID
 import org.kurron.gurps.shared.SharedConfiguration.Companion.CAMPAIGN_COMMAND_KEY
 import org.kurron.gurps.shared.SharedConfiguration.Companion.COMMAND_EXCHANGE
-import org.kurron.gurps.shared.campaign.InitializeCampaignCommand
-import org.kurron.gurps.shared.campaign.InitializeCampaignResponse
 import org.springframework.amqp.rabbit.connection.CorrelationData
 import org.springframework.amqp.rabbit.core.RabbitOperations
 import org.springframework.core.ParameterizedTypeReference

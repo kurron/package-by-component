@@ -3,8 +3,6 @@ package org.kurron.gurps.campaign
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.UUID
 import org.kurron.gurps.shared.SharedConfiguration
-import org.kurron.gurps.shared.campaign.CampaignInitializedEvent
-import org.kurron.gurps.shared.campaign.InitializeCampaignResponse
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageListener
 import org.springframework.amqp.rabbit.core.RabbitOperations

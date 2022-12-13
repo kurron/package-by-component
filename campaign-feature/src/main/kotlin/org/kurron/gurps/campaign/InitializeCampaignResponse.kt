@@ -1,4 +1,4 @@
-package org.kurron.gurps.shared.asset
+package org.kurron.gurps.campaign
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -12,12 +12,12 @@ import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessageDeliveryMode
 import org.springframework.amqp.core.MessagePropertiesBuilder
 
-data class InitializeAssetResponse(@JsonProperty("payload") val payload: String,
-                                   @JsonProperty("label") val label: String = "command.asset.initialize-asset",
-                                   @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "response", feature = "asset"),
-                                   @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
+data class InitializeCampaignResponse(@JsonProperty("payload") val payload: String,
+                                      @JsonProperty("label") val label: String = "command.asset.initialize-campaign",
+                                      @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "response", feature = "campaign"),
+                                      @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
     companion object {
-        fun randomInstance() : InitializeAssetResponse = InitializeAssetResponse(payload = "bar")
+        fun randomInstance() : InitializeCampaignResponse = InitializeCampaignResponse(payload = "bar")
     }
 
     fun toMessage(jackson: ObjectMapper, correlationId: String): Message  {

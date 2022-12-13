@@ -1,11 +1,9 @@
 package org.kurron.gurps.asset
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.util.*
+import java.util.UUID
 import org.kurron.gurps.shared.SharedConfiguration.Companion.ASSET_COMMAND_KEY
 import org.kurron.gurps.shared.SharedConfiguration.Companion.COMMAND_EXCHANGE
-import org.kurron.gurps.shared.asset.InitializeAssetCommand
-import org.kurron.gurps.shared.asset.InitializeAssetResponse
 import org.springframework.amqp.rabbit.connection.CorrelationData
 import org.springframework.amqp.rabbit.core.RabbitOperations
 import org.springframework.core.ParameterizedTypeReference
