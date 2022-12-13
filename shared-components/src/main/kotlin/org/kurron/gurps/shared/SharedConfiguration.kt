@@ -16,6 +16,8 @@ class SharedConfiguration {
         const val EVENT_EXCHANGE = "point-to-multi-point"
         const val ASSET_COMMAND_KEY = "command.asset"
         const val ASSET_EVENT_KEY = "event.asset"
+        const val CAMPAIGN_COMMAND_KEY = "command.campaign"
+        const val CAMPAIGN_EVENT_KEY = "event.campaign"
     }
 
     @Bean

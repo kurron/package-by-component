@@ -1,5 +1,7 @@
 package org.kurron.gurps.character
 
+import java.util.*
+import java.util.function.Function
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,8 +13,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.messaging.support.MessageBuilder
-import java.util.*
-import java.util.function.Function
 
 
 @SpringBootTest

@@ -24,7 +24,13 @@ class AssetConfiguration {
     fun assetCommandBinding(pointToPointExchange: DirectExchange, assetCommandQueue: Queue): Binding = BindingBuilder.bind(assetCommandQueue).to(pointToPointExchange).with(SharedConfiguration.ASSET_COMMAND_KEY)
 
     @Bean
-    fun assetCommandListener(rabbitmq: RabbitOperations, jackson: ObjectMapper): MessageListener = CommandListener(rabbitmq, jackson)
+    fun assetEventQueue(): Queue = QueueBuilder.durable("asset-events").build()
+
+    @Bean
+    fun assetEventBinding(pointToMultiPointExchange: TopicExchange, assetEventQueue: Queue): Binding = BindingBuilder.bind(assetEventQueue).to(pointToMultiPointExchange).with(SharedConfiguration.ASSET_EVENT_KEY)
+
+    @Bean
+    fun assetCommandListener(rabbitmq: RabbitOperations, jackson: ObjectMapper): MessageListener = AssetCommandListener(rabbitmq, jackson)
 
     @Bean
     fun assetCommandContainer(connectionFactory: ConnectionFactory, assetCommandQueue: Queue, assetCommandListener: MessageListener): SimpleMessageListenerContainer {
@@ -35,10 +41,4 @@ class AssetConfiguration {
         container.setBatchSize(1) // probably want commands to come in one at a time, to help preserve some semblance of ordering
         return container
     }
-
-    @Bean
-    fun assetEventQueue(): Queue = QueueBuilder.durable("asset-events").build()
-
-    @Bean
-    fun assetEventBinding(pointToMultiPointExchange: TopicExchange, assetEventQueue: Queue): Binding = BindingBuilder.bind(assetEventQueue).to(pointToMultiPointExchange).with(SharedConfiguration.ASSET_EVENT_KEY)
 }
