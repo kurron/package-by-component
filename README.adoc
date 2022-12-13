@@ -58,3 +58,4 @@ The Cucumber tests are...
 * https://youtu.be/48C-RsEu0BQ[Creating a Loosely Coupled Monolith]
 * https://youtu.be/Qi6TaIYprqc[Asynchronous Messaging in a Loosely Coupled Monolith]
 * https://youtu.be/tDlwu_Lmpx4[ZeroMQ and RabbitMQ Messaging for agility and scalability Allen Holub HD]
+* https://youtu.be/5OjqD-ow8GE[Modular Monoliths]

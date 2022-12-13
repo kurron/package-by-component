@@ -25,4 +25,4 @@ Adam, using his bulk operation tool, is adding new assets to the system, includi
 * skills
 * advantages
 
-WARNING: figure out how to embed the context diagaram
+WARNING: figure out how to embed the context diagram

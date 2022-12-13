@@ -1,22 +1,9 @@
-== Principles
-. Make it explicit what principles are being followed
-. Supply existing references, if they exist
-. Architectural layering strategy
-. No business logic in views
-. No database access in views
-. Use of interfaces
-. Always use an ORM
-. Dependency injection
-. The Hollywood principle
-. High cohesion, low coupling
-. Follow SOLID
-. DRY
-. Ensure all components are stateless (e.g. to ease scaling)
-. Prefer a rich domain model
-. Prefer an anemic domain model
-. Prefer stored procedures
-. Avoid stored procedures
-. Don't reinvent the wheel
-. Approaches to error handling, logging, etc
-. Buy rather than build
-. Technical people only
+== Software Architecture
+* Summarize the software architecture
+* What does the "big picture" look like?
+* Is there a clear structure?
+* Is it clear how the system works from the "30,000 foot view"?
+* Does it show major containers and technology choices?
+* Does it show major components and their interactions?
+* What are the key internal interfaces? (e.g. web service between web and business tiers)
+* Technical people only
