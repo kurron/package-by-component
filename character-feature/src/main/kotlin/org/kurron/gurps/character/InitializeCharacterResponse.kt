@@ -1,4 +1,4 @@
-package org.kurron.gurps.campaign
+package org.kurron.gurps.character
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -12,15 +12,15 @@ import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessageDeliveryMode
 import org.springframework.amqp.core.MessagePropertiesBuilder
 
-data class CampaignInitializedEvent(@JsonProperty("payload") val payload: String,
-                                    @JsonProperty("label") val label: String = "event.campaign.campaign-initialized",
-                                    @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "event", feature = "campaign"),
-                                    @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
+data class InitializeCharacterResponse(@JsonProperty("payload") val payload: String,
+                                       @JsonProperty("label") val label: String = "command.character.initialize-character",
+                                       @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "response", feature = "character"),
+                                       @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
     companion object {
-        fun randomInstance() : CampaignInitializedEvent = CampaignInitializedEvent(payload = "baz")
+        fun randomInstance() : InitializeCharacterResponse = InitializeCharacterResponse(payload = "bar")
     }
 
-    fun toMessage(jackson: ObjectMapper, correlationId: String): Message {
+    fun toMessage(jackson: ObjectMapper, correlationId: String): Message  {
         val bytes = jackson.writeValueAsBytes(this)
         val now = Date.from(Instant.now())
         val type = "${structure.type}/${structure.feature};version=${structure.version}"
@@ -35,5 +35,4 @@ data class CampaignInitializedEvent(@JsonProperty("payload") val payload: String
                                                  .build()
         return MessageBuilder.withBody(bytes).andProperties(properties).build()
     }
-
 }

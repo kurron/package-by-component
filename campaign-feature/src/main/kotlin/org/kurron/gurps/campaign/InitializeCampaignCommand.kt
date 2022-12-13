@@ -14,7 +14,7 @@ import org.springframework.amqp.core.MessagePropertiesBuilder
 import org.springframework.http.MediaType
 
 data class InitializeCampaignCommand(@JsonProperty("payload") val payload: String,
-                                     @JsonProperty("label") val label: String = "command.asset.initialize-campaign",
+                                     @JsonProperty("label") val label: String = "command.campaign.initialize-campaign",
                                      @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "command", feature = "campaign"),
                                      @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
     companion object {

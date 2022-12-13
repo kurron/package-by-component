@@ -13,7 +13,7 @@ import org.springframework.amqp.core.MessageDeliveryMode
 import org.springframework.amqp.core.MessagePropertiesBuilder
 
 data class InitializeCampaignResponse(@JsonProperty("payload") val payload: String,
-                                      @JsonProperty("label") val label: String = "command.asset.initialize-campaign",
+                                      @JsonProperty("label") val label: String = "command.campaign.initialize-campaign",
                                       @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "response", feature = "campaign"),
                                       @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
     companion object {

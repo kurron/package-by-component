@@ -18,6 +18,8 @@ class SharedConfiguration {
         const val ASSET_EVENT_KEY = "event.asset"
         const val CAMPAIGN_COMMAND_KEY = "command.campaign"
         const val CAMPAIGN_EVENT_KEY = "event.campaign"
+        const val CHARACTER_COMMAND_KEY = "command.character"
+        const val CHARACTER_EVENT_KEY = "event.character"
     }
 
     @Bean
