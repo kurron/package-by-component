@@ -12,14 +12,10 @@ import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessageDeliveryMode
 import org.springframework.amqp.core.MessagePropertiesBuilder
 
-data class InitializeAssetResponse(@JsonProperty("payload") val payload: String,
+data class InitializeAssetResponse(@JsonProperty("payload") val payload: Payload,
                                    @JsonProperty("label") val label: String = "command.asset.initialize-asset",
                                    @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "response", feature = "asset"),
                                    @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
-    companion object {
-        fun randomInstance() : InitializeAssetResponse = InitializeAssetResponse(payload = "bar")
-    }
-
     fun toMessage(jackson: ObjectMapper, correlationId: String): Message  {
         val bytes = jackson.writeValueAsBytes(this)
         val now = Date.from(Instant.now())
@@ -35,4 +31,6 @@ data class InitializeAssetResponse(@JsonProperty("payload") val payload: String,
                                                  .build()
         return MessageBuilder.withBody(bytes).andProperties(properties).build()
     }
+
+    data class Payload(@JsonProperty("id") val id: String)
 }

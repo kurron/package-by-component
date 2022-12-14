@@ -12,14 +12,10 @@ import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessageDeliveryMode
 import org.springframework.amqp.core.MessagePropertiesBuilder
 
-data class AssetInitializedEvent(@JsonProperty("payload") val payload: String,
+data class AssetInitializedEvent(@JsonProperty("payload") val payload: Payload,
                                  @JsonProperty("label") val label: String = "event.asset.asset-initialized",
                                  @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "event", feature = "asset"),
                                  @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
-    companion object {
-        fun randomInstance() : AssetInitializedEvent = AssetInitializedEvent(payload = "baz")
-    }
-
     fun toMessage(jackson: ObjectMapper, correlationId: String): Message {
         val bytes = jackson.writeValueAsBytes(this)
         val now = Date.from(Instant.now())
@@ -27,7 +23,6 @@ data class AssetInitializedEvent(@JsonProperty("payload") val payload: String,
         val properties = MessagePropertiesBuilder.newInstance()
                                                  .setAppId(SharedConfiguration.APPLICATION_ID)
                                                  .setMessageId(id.toString())
-                                                 .setHeader("foo","bar")
                                                  .setTimestamp(now)
                                                  .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT)
                                                  .setType(type)
@@ -36,4 +31,5 @@ data class AssetInitializedEvent(@JsonProperty("payload") val payload: String,
         return MessageBuilder.withBody(bytes).andProperties(properties).build()
     }
 
+    data class Payload(@JsonProperty("id") val id: String)
 }

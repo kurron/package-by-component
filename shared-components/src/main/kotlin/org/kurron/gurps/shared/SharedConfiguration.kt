@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SharedConfiguration {
     companion object {
+        // Messaging constants
         const val APPLICATION_ID = "GURPS Online"
         const val COMMAND_EXCHANGE = "point-to-point"
         const val EVENT_EXCHANGE = "point-to-multi-point"
@@ -20,6 +21,9 @@ class SharedConfiguration {
         const val CAMPAIGN_EVENT_KEY = "event.campaign"
         const val CHARACTER_COMMAND_KEY = "command.character"
         const val CHARACTER_EVENT_KEY = "event.character"
+
+        // AMQP Headers
+        const val PRIMARY_KEY = "primary-key"
     }
 
     @Bean
