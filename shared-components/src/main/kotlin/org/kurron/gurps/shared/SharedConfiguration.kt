@@ -21,6 +21,8 @@ class SharedConfiguration {
         const val CAMPAIGN_EVENT_KEY = "event.campaign"
         const val CHARACTER_COMMAND_KEY = "command.character"
         const val CHARACTER_EVENT_KEY = "event.character"
+        const val USER_COMMAND_KEY = "command.user"
+        const val USER_EVENT_KEY = "event.user"
 
         // AMQP Headers
         const val PRIMARY_KEY = "primary-key"

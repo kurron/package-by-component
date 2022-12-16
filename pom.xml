@@ -100,6 +100,7 @@
 		<module>character-feature</module>
 		<module>gurps-online</module>
 		<module>specification-by-example</module>
+		<module>user-feature</module>
 <!--
 		<module>kotlin-skeleton</module>
 -->
