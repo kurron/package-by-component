@@ -31,5 +31,5 @@ data class CreateUserResponse(@JsonProperty("payload") val payload: Payload,
         return MessageBuilder.withBody(bytes).andProperties(properties).build()
     }
 
-    data class Payload(@JsonProperty("id") val id: String)
+    data class Payload(@JsonProperty("username") val username: String, @JsonProperty("password") val password: String)
 }

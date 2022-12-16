@@ -26,6 +26,8 @@ class SharedConfiguration {
 
         // AMQP Headers
         const val PRIMARY_KEY = "primary-key"
+        const val COMMAND_LABEL_KEY = "command-label"
+        const val CREATE_USER_LABEL = "command.user.create-user"
     }
 
     @Bean
