@@ -30,13 +30,3 @@ class UserCommandListener(private val rabbitmq: RabbitOperations, private val ja
         rabbitmq.send(SharedConfiguration.EVENT_EXCHANGE, SharedConfiguration.USER_EVENT_KEY, eventMessage)
     }
 }
-
-/*
-token - claim-_mNEcN4mFmxHWgyqFvZd
-port = 32400
-host network - true
-data - /mnt/secondary/nidavellir/low-priority/videos
-config - /mnt/secondary/applications/plex
-/raw-blu-rays - /mnt/secondary/nidavellir/low-priority/raw-video (read-only)
-intel GPU
- */
