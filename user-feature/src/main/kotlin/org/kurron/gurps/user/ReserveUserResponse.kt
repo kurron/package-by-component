@@ -12,10 +12,10 @@ import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessageDeliveryMode
 import org.springframework.amqp.core.MessagePropertiesBuilder
 
-data class CreateUserResponse(@JsonProperty("payload") val payload: Payload,
-                              @JsonProperty("label") val label: String = "command.user.create-user",
-                              @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "response", feature = "user"),
-                              @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
+data class ReserveUserResponse(@JsonProperty("payload") val payload: Payload,
+                               @JsonProperty("label") val label: String = "command.user.reserve-user",
+                               @JsonProperty("structure") val structure: MessageStructure = MessageStructure(version = "1.0.0", type = "response", feature = "user"),
+                               @JsonProperty("id") val id: UUID = UUID.randomUUID()) {
     fun toMessage(jackson: ObjectMapper, correlationId: String): Message  {
         val bytes = jackson.writeValueAsBytes(this)
         val now = Date.from(Instant.now())

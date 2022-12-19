@@ -18,12 +18,12 @@ class UserCommandListener(private val rabbitmq: RabbitOperations, private val ja
     }
 
     private fun processCreateUser(message: Message) {
-        val type = object : TypeReference<CreateUserCommand>() {}
+        val type = object : TypeReference<ReserveUserCommand>() {}
         val command = jackson.readValue(message.body, type)
         // TODO: do some database work
-        val response = CreateUserResponse(payload = CreateUserResponse.Payload(username = command.payload.username, password = "some password"))
+        val response = ReserveUserResponse(payload = ReserveUserResponse.Payload(username = command.payload.username, password = "some password"))
         val responseMessage = response.toMessage(jackson, message.messageProperties.correlationId)
-        val event = UserCreatedEvent(payload = UserCreatedEvent.Payload(command.payload.username))
+        val event = UserReservedEvent(payload = UserReservedEvent.Payload(command.payload.username))
         val eventMessage = event.toMessage(jackson, message.messageProperties.correlationId)
         rabbitmq.send(message.messageProperties.replyTo, responseMessage)
         // TODO: outbox pattern
