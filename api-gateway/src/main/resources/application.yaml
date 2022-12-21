@@ -1,0 +1,47 @@
+#normally automatically detected
+#spring.main.cloud-platform=kubernetes
+info:
+  message: Hello, world!
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: remoteaddr_route
+          uri: http://localhost:7070
+          predicates:
+            - RemoteAddr=127.0.01/32
+          filters:
+            - name: SetRequestHostHeader
+              args:
+                host: alpha-test.kurron.org
+      x-forwarded:
+        enabled: true
+        host-enabled: true
+        port-enabled: true
+        proto-enabled: true
+        prefix-enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+server:
+  port: 6060
+  shutdown: graceful
+
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+    import: "configtree:${HOME}/Desktop/config/"

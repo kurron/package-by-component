@@ -19,7 +19,7 @@
 		<cucumber.version>7.8.1</cucumber.version>
 		<repackage.classifier/>
 		<kotlin.version>1.7.21</kotlin.version>
-		<spring-cloud.version>2022.0.0-RC2</spring-cloud.version>
+		<spring-cloud.version>2022.0.0</spring-cloud.version>
 		<spring-shell.version>3.0.0-M2</spring-shell.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
 		<build.native>false</build.native>
@@ -101,6 +101,7 @@
 		<module>gurps-online</module>
 		<module>specification-by-example</module>
 		<module>user-feature</module>
+		<module>api-gateway</module>
 <!--
 		<module>kotlin-skeleton</module>
 -->
