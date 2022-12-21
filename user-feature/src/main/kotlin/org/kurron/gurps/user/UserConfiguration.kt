@@ -14,7 +14,6 @@ import org.springframework.amqp.rabbit.core.RabbitOperations
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.filter.ForwardedHeaderFilter
 
 
 @Configuration
@@ -42,11 +41,6 @@ class UserConfiguration {
         container.setMessageListener(userCommandListener)
         container.setBatchSize(1) // probably want commands to come in one at a time, to help preserve some semblance of ordering
         return container
-    }
-
-    @Bean
-    fun forwardedHeaderFilter(): ForwardedHeaderFilter {
-        return ForwardedHeaderFilter()
     }
 
 }
