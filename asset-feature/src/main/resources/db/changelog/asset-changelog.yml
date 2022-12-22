@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+  - changeSet:
+      id: assets-001
+      author: rkurr@jvmguy.com
+      comment: Creation of schema
+      labels: assets
+      context: assets
+      changes:
+        - sql:
+            comment: Liquibase doesn't have a schema creation statement so we do it by hand
+            sql: CREATE SCHEMA IF NOT EXISTS assets
+  - changeSet:
+      id: assets-002
+      author: rkurr@jvmguy.com
+      comment: Initial asset table
+      labels: assets
+      context: assets
+      changes:
+        - createTable:
+            schemaName: assets
+            remarks: Holds armor, weapons, etc.
+            tableName: assets
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: asset-pk
+                    nullable: false
+        - createTable:
+            schemaName: assets
+            remarks: Holds skills
+            tableName: skills
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: skills-pk
+                    nullable: false
+        - createTable:
+            schemaName: assets
+            remarks: Holds advantages
+            tableName: advantages
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: advantages-pk
+                    nullable: false
+        - createTable:
+            schemaName: assets
+            remarks: Holds disadvantages
+            tableName: disadvantages
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: disadvantages-pk
+                    nullable: false

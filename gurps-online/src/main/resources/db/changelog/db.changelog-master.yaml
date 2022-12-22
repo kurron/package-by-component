@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/asset-changelog.yml
+  - include:
+      file: db/changelog/campaign-changelog.yml
+  - include:
+      file: db/changelog/character-changelog.yml
+  - include:
+      file: db/changelog/user-changelog.yml

@@ -15,6 +15,20 @@ services:
       RABBITMQ_DEFAULT_PASS: rabbitmq
       RABBITMQ_DEFAULT_VHOST: gurps
 
+  postgres:
+    container_name: postgres
+    hostname: postgres
+    image: postgres:latest
+    networks:
+      - back-tier
+    ports:
+      - "5432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
 
 #  command-processor:
 #    container_name: command-processor

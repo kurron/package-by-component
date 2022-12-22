@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+  - changeSet:
+      id: character-001
+      author: rkurr@jvmguy.com
+      comment: Creation of schema
+      labels: character
+      context: character
+      changes:
+        - sql:
+            comment: Liquibase doesn't have a schema creation statement so we do it by hand
+            sql: CREATE SCHEMA IF NOT EXISTS character
+  - changeSet:
+      id: character-002
+      author: rkurr@jvmguy.com
+      comment: Initial character table
+      labels: character
+      context: character
+      changes:
+        - createTable:
+            schemaName: character
+            remarks: Holds characters
+            tableName: character
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: character-pk
+                    nullable: false

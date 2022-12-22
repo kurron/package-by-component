@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+  - changeSet:
+      id: campaign-001
+      author: rkurr@jvmguy.com
+      comment: Creation of schema
+      labels: campaign
+      context: campaign
+      changes:
+        - sql:
+            comment: Liquibase doesn't have a schema creation statement so we do it by hand
+            sql: CREATE SCHEMA IF NOT EXISTS campaign
+  - changeSet:
+      id: campaign-002
+      author: rkurr@jvmguy.com
+      comment: Initial campaign table
+      labels: campaign
+      context: campaign
+      changes:
+        - createTable:
+            schemaName: campaign
+            remarks: Holds campaigns
+            tableName: campaign
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: campaign-pk
+                    nullable: false

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+  - changeSet:
+      id: account-001
+      author: rkurr@jvmguy.com
+      comment: Creation of schema
+      labels: account
+      context: account
+      changes:
+        - sql:
+            comment: Liquibase doesn't have a schema creation statement so we do it by hand
+            sql: CREATE SCHEMA IF NOT EXISTS account
+  - changeSet:
+      id: account-002
+      author: rkurr@jvmguy.com
+      comment: Initial account table
+      labels: account
+      context: account
+      changes:
+        - createTable:
+            schemaName: account
+            remarks: Holds characters
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: account-pk
+                    nullable: false
