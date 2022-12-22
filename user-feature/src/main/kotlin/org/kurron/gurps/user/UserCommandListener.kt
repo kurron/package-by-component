@@ -12,12 +12,12 @@ import org.springframework.amqp.rabbit.core.RabbitOperations
 class UserCommandListener(private val rabbitmq: RabbitOperations, private val jackson: ObjectMapper): MessageListener {
     override fun onMessage(message: Message) {
         when(val label = message.messageProperties.headers[COMMAND_LABEL_KEY]) {
-            CREATE_USER_LABEL -> processCreateUser(message)
+            CREATE_USER_LABEL -> processReserveUser(message)
             else -> println("$label not supported!")
         }
     }
 
-    private fun processCreateUser(message: Message) {
+    private fun processReserveUser(message: Message) {
         val type = object : TypeReference<ReserveUserCommand>() {}
         val command = jackson.readValue(message.body, type)
         // TODO: do some database work
