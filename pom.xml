@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<packaging>pom</packaging>
@@ -18,9 +18,9 @@
 		<java.version>17</java.version>
 		<cucumber.version>7.8.1</cucumber.version>
 		<repackage.classifier/>
-		<kotlin.version>1.7.21</kotlin.version>
-		<spring-cloud.version>2022.0.0</spring-cloud.version>
-		<spring-shell.version>3.0.0-M2</spring-shell.version>
+		<kotlin.version>1.7.22</kotlin.version>
+		<spring-cloud.version>2022.0.1</spring-cloud.version>
+		<spring-shell.version>3.0.0</spring-shell.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
 		<build.native>false</build.native>
 	</properties>
