@@ -1,4 +1,4 @@
-package org.kurron.gurps.user
+package org.kurron.gurps.shared
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority

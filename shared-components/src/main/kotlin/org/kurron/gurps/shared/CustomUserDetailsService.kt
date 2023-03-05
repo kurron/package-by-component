@@ -1,4 +1,4 @@
-package org.kurron.gurps.user
+package org.kurron.gurps.shared
 
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
