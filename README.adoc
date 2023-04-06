@@ -27,6 +27,7 @@ This project is an implementation of the GURPS 4th Edition rules using an idea f
 * `./mvnw -DskipTests --batch-mode --update-snapshots --errors clean package spring-boot:build-image`
 * `./mvnw -DskipTests --batch-mode --update-snapshots --errors clean install`
 * `./mvnw -pl gurps-online spring-boot:run`
+
 == Installation
 
 == Tips and Tricks
