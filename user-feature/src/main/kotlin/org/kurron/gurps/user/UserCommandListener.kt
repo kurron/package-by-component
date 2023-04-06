@@ -2,6 +2,7 @@ package org.kurron.gurps.user
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.net.URI
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.kurron.gurps.shared.FailureDetails
 import org.kurron.gurps.shared.FailureType
@@ -12,7 +13,6 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageListener
 import org.springframework.amqp.rabbit.core.RabbitOperations
 import org.springframework.dao.OptimisticLockingFailureException
-import java.net.URI
 
 class UserCommandListener(private val rabbitmq: RabbitOperations, private val jackson: ObjectMapper, private val repository: AccountRepository): MessageListener {
     override fun onMessage(message: Message) {
@@ -38,7 +38,7 @@ class UserCommandListener(private val rabbitmq: RabbitOperations, private val ja
             response.toMessage(jackson, message.messageProperties.correlationId)
         }
         catch (e: OptimisticLockingFailureException) {
-            val response = FailureDetails("Unable to acquire a database lock. The row may no longer be exist.", URI.create("about:blank"), FailureType.OPTIMISTIC_LOCKING_FAILURE)
+            val response = FailureDetails("Unable to acquire a database lock. The row may no longer exist.", URI.create("about:blank"), FailureType.OPTIMISTIC_LOCKING_FAILURE)
             response.toMessage(jackson, message.messageProperties.correlationId)
         }
         catch (e: IllegalArgumentException) {
