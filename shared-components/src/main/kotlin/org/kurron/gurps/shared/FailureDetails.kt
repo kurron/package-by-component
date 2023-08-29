@@ -2,10 +2,6 @@ package org.kurron.gurps.shared
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.amqp.core.Message
-import org.springframework.amqp.core.MessageBuilder
-import org.springframework.amqp.core.MessageDeliveryMode
-import org.springframework.amqp.core.MessagePropertiesBuilder
 import org.springframework.hateoas.mediatype.problem.Problem
 import org.springframework.http.HttpStatus
 import org.springframework.web.util.UriComponentsBuilder
@@ -27,19 +23,11 @@ data class FailureDetails(@JsonProperty("detail") val detail: String, // Your cu
         fun randomInstance(): FailureDetails = FailureDetails("You have randomly failed!", URI.create("problems/randomly-generated"))
     }
 
-    fun toMessage(jackson: ObjectMapper, correlationId: String): Message {
+    fun toMessage(jackson: ObjectMapper, correlationId: String): String {
         val bytes = jackson.writeValueAsBytes(this)
         val now = Date.from(Instant.now())
         val type = "${structure.type}/${structure.feature}/${structure.version}"
-        val properties = MessagePropertiesBuilder.newInstance()
-                                                 .setAppId(SharedConfiguration.APPLICATION_ID)
-                                                 .setMessageId(UUID.randomUUID().toString())
-                                                 .setTimestamp(now)
-                                                 .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT)
-                                                 .setType(type)
-                                                 .setCorrelationId(correlationId)
-                                                 .build()
-        return MessageBuilder.withBody(bytes).andProperties(properties).build()
+        return "FOO BAR!"
     }
 
     fun toProblem(builder: UriComponentsBuilder): Problem {

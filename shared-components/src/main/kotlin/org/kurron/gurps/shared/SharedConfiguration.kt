@@ -1,16 +1,6 @@
 package org.kurron.gurps.shared
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.amqp.core.Binding
-import org.springframework.amqp.core.BindingBuilder
-import org.springframework.amqp.core.DirectExchange
-import org.springframework.amqp.core.ExchangeBuilder
-import org.springframework.amqp.core.Queue
-import org.springframework.amqp.core.QueueBuilder
-import org.springframework.amqp.core.TopicExchange
-import org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler
-import org.springframework.amqp.rabbit.listener.FatalExceptionStrategy
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing
@@ -51,30 +41,6 @@ class SharedConfiguration {
         val EXAMPLE_TYPE = URI.create("https://example.net/validation-error")
         val EXAMPLE_INSTANCE = URI.create("https://gurps.test-bed-alpha.example.com/account/12345/msgs/abc")
     }
-
-    @Bean
-    fun deadLetterExchange(): DirectExchange = ExchangeBuilder.directExchange(DEAD_LETTER_EXCHANGE).durable(false).build()
-
-    @Bean
-    fun pointToPointExchange(deadLetterExchange: DirectExchange): DirectExchange = ExchangeBuilder.directExchange(COMMAND_EXCHANGE).durable(false).build()
-
-    @Bean
-    fun pointToMultiPointExchange(): TopicExchange = ExchangeBuilder.topicExchange(EVENT_EXCHANGE).durable(false).build()
-
-    @Bean
-    fun deadLetterQueue(): Queue = QueueBuilder.durable("dead-letter").overflow(QueueBuilder.Overflow.dropHead).build()
-
-    @Bean
-    fun deadLetterBinding(deadLetterExchange: DirectExchange, deadLetterQueue: Queue): Binding = BindingBuilder.bind(deadLetterQueue).to(deadLetterExchange).with(DEAD_LETTER_KEY)
-
-    @Bean
-    fun converter(jackson: ObjectMapper): Jackson2JsonMessageConverter = Jackson2JsonMessageConverter(jackson)
-
-    @Bean
-    fun customExceptionStrategy(): FatalExceptionStrategy = CustomExceptionStrategy()
-
-    @Bean
-    fun conditionalRejectingErrorHandler(customExceptionStrategy: FatalExceptionStrategy): ErrorHandler = ConditionalRejectingErrorHandler(customExceptionStrategy)
 
     @Bean
     fun customAuditorAware(): CustomAuditorAware = CustomAuditorAware()

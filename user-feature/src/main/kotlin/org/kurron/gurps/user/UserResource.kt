@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.kurron.gurps.shared.FailureDetails
 import org.kurron.gurps.shared.SharedConfiguration.Companion.COMMAND_EXCHANGE
 import org.kurron.gurps.shared.SharedConfiguration.Companion.USER_COMMAND_KEY
-import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.connection.CorrelationData
-import org.springframework.amqp.rabbit.core.RabbitOperations
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.hateoas.MediaTypes
 import org.springframework.hateoas.RepresentationModel
@@ -30,17 +27,15 @@ import java.net.URI
 
 @RestController
 @RequestMapping(path = ["/user"])
-class UserResource(private val rabbitmq: RabbitOperations, private val jackson: ObjectMapper) {
+class UserResource(private val jackson: ObjectMapper) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaTypes.HAL_JSON_VALUE])
     fun create(builder: UriComponentsBuilder, @RequestBody body: ReserveUserCommand.Payload): ResponseEntity<*> {
         return try {
             val command = ReserveUserCommand(payload = body)
             val message = command.toMessage(jackson)
-            val correlationData = CorrelationData(command.id.toString())
             //TODO: we CANNOT assume the response type. It is dynamic depending on error conditions!
-            val responseType = object : ParameterizedTypeReference<Message>() {}
-            val response = rabbitmq.convertSendAndReceiveAsType(COMMAND_EXCHANGE, USER_COMMAND_KEY, message, correlationData, responseType)
+            val response = null
             if (null == response) {
                 // always the same -- we can't know the details
                 val problem = Problem.create()
@@ -51,15 +46,15 @@ class UserResource(private val rabbitmq: RabbitOperations, private val jackson: 
                                      .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problem)
             }
-            else if (response.messageProperties.type.equals("failure/all/1.0.0")) {
+            else if ("response.messageProperties.type".equals("failure/all/1.0.0")) {
                 val type = object : TypeReference<FailureDetails>() {}
-                val failure = jackson.readValue(response.body, type)
+                val failure = jackson.readValue("response.body", type)
                 val problem = failure.toProblem(builder)
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problem)
             }
-            else if (response.messageProperties.type.equals("response/user/1.0.0")) {
+            else if ("response.messageProperties.type".equals("response/user/1.0.0")) {
                 val type = object : TypeReference<ReserveUserResponse>() {}
-                val happy = jackson.readValue(response.body, type)
+                val happy = jackson.readValue("response.body", type)
                 val self = WebMvcLinkBuilder.linkTo(UserResource::class.java).slash(happy.id).withSelfRel()
                 val hal = HalModelBuilder.halModelOf(happy).link(self).build()
                 ResponseEntity.ok(hal)
