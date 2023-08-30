@@ -46,10 +46,21 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.modulith</groupId>
+				<artifactId>spring-modulith-bom</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-reflect</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib</artifactId>
@@ -90,14 +101,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<modules>
-		<module>shared-components</module>
-		<module>asset-feature</module>
-		<module>campaign-feature</module>
-		<module>character-feature</module>
 		<module>gurps-online</module>
-		<module>specification-by-example</module>
-		<module>user-feature</module>
-		<module>api-gateway</module>
 <!--
 		<module>kotlin-skeleton</module>
 -->
