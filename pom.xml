@@ -101,10 +101,17 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<modules>
+		<module>shared-components</module>
+		<module>asset-feature</module>
+		<module>campaign-feature</module>
+		<module>character-feature</module>
+		<module>user-feature</module>
 		<module>gurps-online</module>
-<!--
-		<module>kotlin-skeleton</module>
--->
+		<module>specification-by-example</module>
+		<!--
+                <module>api-gateway</module>
+                <module>kotlin-skeleton</module>
+        -->
 	</modules>
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
