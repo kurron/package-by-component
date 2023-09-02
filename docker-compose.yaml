@@ -1,20 +1,4 @@
 services:
-  rabbitmq:
-    container_name: rabbitmq
-    hostname: rabbitmq
-    image: rabbitmq:management
-    networks:
-      - back-tier
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    tmpfs:
-      - /var/lib/rabbitmq
-    environment:
-      RABBITMQ_DEFAULT_USER: rabbitmq
-      RABBITMQ_DEFAULT_PASS: rabbitmq
-      RABBITMQ_DEFAULT_VHOST: gurps
-
   postgres:
     container_name: postgres
     hostname: postgres

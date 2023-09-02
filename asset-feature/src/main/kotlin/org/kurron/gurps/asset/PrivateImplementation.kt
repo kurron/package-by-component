@@ -1,8 +1,15 @@
 package org.kurron.gurps.asset
 
-import org.springframework.stereotype.Component
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
-@Component("Asset")
-internal class PrivateImplementation: ProvidedInterface {
-    override fun foo() =  "org.kurron.gurps.asset.PrivateImplementation called!"
+@Service("Asset")
+internal class PrivateImplementation(private val events: ApplicationEventPublisher): ProvidedInterface {
+
+    @Transactional
+    override fun foo(): String {
+        events.publishEvent("Ron was here!")
+        return "org.kurron.gurps.asset.PrivateImplementation called!"
+    }
 }

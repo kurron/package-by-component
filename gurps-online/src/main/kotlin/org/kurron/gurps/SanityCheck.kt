@@ -25,5 +25,6 @@ class SanityCheck(private val asset: Asset,
         logger.info("campaign call: " + campaign.foo())
         logger.info("character call: " + character.foo())
         logger.info("user call: " + user.foo())
+
     }
 }
