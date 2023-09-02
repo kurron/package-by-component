@@ -1,7 +1,8 @@
 package org.kurron.gurps.character
 
+import org.springframework.stereotype.Component
+
+@Component("Character")
 internal class PrivateImplementation: ProvidedInterface {
-    override fun foo() {
-        TODO("Not yet implemented")
-    }
+    override fun foo() = "org.kurron.gurps.character.PrivateImplementation called!"
 }
