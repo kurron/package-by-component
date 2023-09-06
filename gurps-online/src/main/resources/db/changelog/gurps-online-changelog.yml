@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+  - changeSet:
+      id: user-001
+      author: rkurr@jvmguy.com
+      comment: Spring's event tracking table
+      labels: spring
+      context: spring
+      changes:
+        - createTable:
+            schemaName: public
+            remarks: Spring Modulith's event storage
+            tableName: event_publication
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  remarks: primary key
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: event-pk
+                    nullable: false
+                    validatePrimaryKey: true
+                    validateNullable: true
+              - column:
+                  name: listener_id
+                  type: varchar(64)
+                  remarks: Not sure what this is for yet
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: event_type
+                  type: varchar(64)
+                  remarks: Not sure what this is for yet
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: serialized_event
+                  type: varchar(64)
+                  remarks: Not sure what this is for yet
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: publication_date
+                  type: timestamp
+                  remarks: Not sure what this is for yet
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: completion_date
+                  type: timestamp
+                  remarks: Not sure what this is for yet
+                  constraints:
+                    nullable: true
+                    validateNullable: true

@@ -1,5 +1,7 @@
 databaseChangeLog:
   - include:
+      file: db/changelog/gurps-online-changelog.yml
+  - include:
       file: db/changelog/asset-changelog.yml
   - include:
       file: db/changelog/campaign-changelog.yml

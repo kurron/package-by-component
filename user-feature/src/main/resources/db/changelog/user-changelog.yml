@@ -3,18 +3,16 @@ databaseChangeLog:
       - onFail: HALT
       - dbms:
           type: postgresql
-#  - changeSet:
-#      id: user-001
-#      author: rkurr@jvmguy.com
-#      comment: Creation of schema
-#      labels: user
-#      context: user
-#      changes:
-#        - tagDatabase:
-#            tag: initial-setup
-#        - sql:
-#            comment: Liquibase doesn't have a schema creation statement so we do it by hand
-#            sql: CREATE SCHEMA IF NOT EXISTS user
+  - changeSet:
+      id: user-001
+      author: rkurr@jvmguy.com
+      comment: Creation of schema
+      labels: user
+      context: user
+      changes:
+        - sql:
+            comment: Liquibase doesn't have a schema creation statement so we do it by hand
+            sql: CREATE SCHEMA IF NOT EXISTS uzer
   - changeSet:
       id: user-002
       author: rkurr@jvmguy.com
@@ -22,8 +20,6 @@ databaseChangeLog:
       labels: user
       context: user
       changes:
-        - tagDatabase:
-            tag: initial-setup
         - createTable:
             schemaName: uzer
             remarks: Holds characters
