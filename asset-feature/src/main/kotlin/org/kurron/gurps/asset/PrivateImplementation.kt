@@ -5,11 +5,12 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service("Asset")
-internal class PrivateImplementation(private val events: ApplicationEventPublisher): ProvidedInterface {
+internal class PrivateImplementation(private val events: ApplicationEventPublisher, private val repository: AssetRepository): ProvidedInterface {
 
     @Transactional
     override fun foo(): String {
-        events.publishEvent("Ron was here!")
+        val primaryKey = repository.save(Asset.randomInstance())
+        events.publishEvent("Just persisted asset " + primaryKey.id)
         return "org.kurron.gurps.asset.PrivateImplementation called!"
     }
 }

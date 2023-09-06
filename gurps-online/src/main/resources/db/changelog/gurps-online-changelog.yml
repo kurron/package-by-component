@@ -4,7 +4,7 @@ databaseChangeLog:
       - dbms:
           type: postgresql
   - changeSet:
-      id: user-001
+      id: gurps-001
       author: rkurr@jvmguy.com
       comment: Spring's event tracking table
       labels: spring
@@ -48,14 +48,14 @@ databaseChangeLog:
                     validateNullable: true
               - column:
                   name: publication_date
-                  type: timestamp
+                  type: datetime
                   remarks: Not sure what this is for yet
                   constraints:
                     nullable: false
                     validateNullable: true
               - column:
                   name: completion_date
-                  type: timestamp
+                  type: datetime
                   remarks: Not sure what this is for yet
                   constraints:
                     nullable: true

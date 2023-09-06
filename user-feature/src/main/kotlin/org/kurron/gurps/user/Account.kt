@@ -17,9 +17,9 @@ internal data class Account(@Column("id") @Id val id: Int = 0,
                             @Column("username") val username: String,
                             @Column("password") val password: String,
                             @Column("created_by") @CreatedBy val createdBy: String = "unknown",
-                            @Column("created_on") @CreatedDate val createdOn: LocalDateTime = LocalDateTime.MIN,
+                            @Column("created_on") @CreatedDate val createdOn: LocalDateTime = LocalDateTime.now(),
                             @Column("modified_by") @LastModifiedBy val modifiedBy: String = "unknown",
-                            @Column("modified_on") @LastModifiedDate val modifiedOn: LocalDateTime = LocalDateTime.MIN) {
+                            @Column("modified_on") @LastModifiedDate val modifiedOn: LocalDateTime = LocalDateTime.now()) {
     companion object {
         fun randomInstance() = Account(username = randomString(), password = randomString())
         private fun randomString() = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE).toString(16)
