@@ -22,7 +22,7 @@ databaseChangeLog:
       changes:
         - createTable:
             schemaName: campaign
-            remarks: Holds campaigns
+            remarks: Holds campaign details
             tableName: campaign
             columns:
               - column:
@@ -33,3 +33,38 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: campaign-pk
                     nullable: false
+              - column:
+                  name: version
+                  type: int
+                  remarks: optimistic locking
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: created_by
+                  type: varchar(64)
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: created_on
+                  type: datetime
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: modified_by
+                  type: varchar(64)
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: modified_on
+                  type: datetime
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
