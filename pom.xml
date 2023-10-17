@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.3</version>
+		<version>3.1.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<packaging>pom</packaging>
@@ -20,7 +20,7 @@
 		<repackage.classifier/>
 		<kotlin.version>1.8.22</kotlin.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
-		<spring-shell.version>3.1.3</spring-shell.version>
+		<spring-shell.version>3.1.4</spring-shell.version>
 		<spring-modulith.version>1.0.0</spring-modulith.version>
 		<build.native>false</build.native>
 <!--

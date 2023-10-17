@@ -17,6 +17,6 @@ class ApplicationTests {
 
 		val modules = ApplicationModules.of(Application::class.java).verify()
 
-		Documenter(modules).writeModulesAsPlantUml().writeIndividualModulesAsPlantUml();
+		Documenter(modules).writeModulesAsPlantUml().writeIndividualModulesAsPlantUml().writeModuleCanvases();
 	}
 }
