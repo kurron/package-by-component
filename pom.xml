@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.5</version>
+		<version>3.2.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<packaging>pom</packaging>
@@ -16,12 +16,12 @@
 	<description>Trying out &quot;package by component&quot;</description>
 	<properties>
 		<java.version>17</java.version>
+		<kotlin.version>1.9.21</kotlin.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
+		<spring-modulith.version>1.1.0</spring-modulith.version>
+		<spring-shell.version>3.2.0</spring-shell.version>
+
 		<cucumber.version>7.8.1</cucumber.version>
-		<repackage.classifier/>
-		<kotlin.version>1.8.22</kotlin.version>
-		<spring-cloud.version>2022.0.4</spring-cloud.version>
-		<spring-shell.version>3.1.4</spring-shell.version>
-		<spring-modulith.version>1.0.2</spring-modulith.version>
 		<build.native>false</build.native>
 <!--
 		<spring-data-bom.version>2023.0.3</spring-data-bom.version>
@@ -76,52 +76,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-<!--
-	<dependencies>
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-reflect</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-stdlib</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
--->
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 	<modules>
 <!--
 		<module>shared-components</module>
@@ -137,6 +91,7 @@
         <module>kotlin-skeleton</module>
         -->
 	</modules>
+
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
