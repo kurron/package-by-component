@@ -2,8 +2,8 @@
 
 #(Person|SoftwareSystem|Container|Component|DeploymentNode|InfrastructureNode|SoftwareSystemInstance|ContainerInstance|Custom)
 
-!constant CODE_NAME "Project Alpha"
-!constant GROUP_NAME "Group"
+!const CODE_NAME "Project Alpha"
+!const GROUP_NAME "Group"
 
 /*
 multi line
@@ -20,7 +20,7 @@ workspace "GURPS Online" "Second" {
     !docs documents
     !adrs decisions
 
-    !constant FOO "Some text you want to reuse."
+    !const FOO "Some text you want to reuse."
 
     model {
         gary = Person "Gary" {
