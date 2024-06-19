@@ -18,10 +18,10 @@ This project is an implementation of the GURPS 4th Edition rules using an idea f
 * leverage Spring projects, reducing the amount of code to be written
 * leverage new features of Spring 3 release, observability, etc.
 * Kotlin in production code
-* Java 17 in test code
+* Java 21 in test code
 
 == Prerequisites
-* JDK 17 or greater
+* JDK 21 or greater
 
 == Building
 * `./mvnw -DskipTests --batch-mode --update-snapshots --errors clean package spring-boot:build-image`
