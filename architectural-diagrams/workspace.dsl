@@ -32,14 +32,6 @@ workspace "GURPS Online" "Second" {
         adam = Person "Adam" {
             description "System Administrator"
         }
-        cli = softwareSystem "Command Line Interface" {
-            description "Bulk operation tool"
-            tags "CommandLine"
-            perspectives {
-            }
-            adam -> this "bulk uploads assets" "JSON file" "TAG" {
-            }
-        }
         gurps = softwareSystem "GURPS Online" {
             description "Online version of GURPS release 4"
             perspectives {
@@ -142,7 +134,7 @@ workspace "GURPS Online" "Second" {
                 tags "DataStore"
                 perspectives {
                 }
-                component "User Tenant" {
+                component "User Namespace" {
                     description "User information in its own space"
                     technology "MongoDB"
                     perspectives {
@@ -150,7 +142,7 @@ workspace "GURPS Online" "Second" {
                     userServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
-                component "Campaign Tenant" {
+                component "Campaign Namespace" {
                     description "Campaign information in its own space"
                     technology "MongoDB"
                     perspectives {
@@ -158,7 +150,7 @@ workspace "GURPS Online" "Second" {
                     campaignServices -> this "read/write campaign data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
-                component "Character Tenant" {
+                component "Character Namespace" {
                     description "Character information in its own space"
                     technology "MongoDB"
                     perspectives {
@@ -166,7 +158,7 @@ workspace "GURPS Online" "Second" {
                     characterServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
-                component "Asset Tenant" {
+                component "Asset Namespace" {
                     description "Asset information in its own space"
                     technology "MongoDB"
                     perspectives {
@@ -189,8 +181,19 @@ workspace "GURPS Online" "Second" {
                 deploymentNode "GURPS Pods" {
                     description "On-prem Kubernetes cluster"
                     technology "Kubernetes"
-                    instances 8
-                    containerInstance userFeature
+                    instances 2
+                    deploymentNode "User Feature" {
+                        containerInstance userFeature
+                    }
+                    deploymentNode "Campaign Feature" {
+                        containerInstance campaignFeature
+                    }
+                    deploymentNode "Character Feature" {
+                        containerInstance characterFeature
+                    }
+                    deploymentNode "Asset Feature" {
+                        containerInstance assetFeature
+                    }
                 }
             }
         }
