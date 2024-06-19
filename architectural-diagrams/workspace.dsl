@@ -211,7 +211,7 @@ workspace "GURPS Online" "Second" {
                 tags "DataStore"
                 perspectives {
                 }
-                component "Character Table" {
+                characterAssetTable = component "Character Table" {
                     description "Assets for character use"
                     technology "PostgreSQL"
                     perspectives {
@@ -397,20 +397,15 @@ workspace "GURPS Online" "Second" {
             include *
             autoLayout
         }
-/*
-        dynamic "cli" "cli-alpha" "Click on button to animate" {
-            title "User creation flow"
+        dynamic "assetFeature" "adam-bulk-character-asset-flow" "Click on button to animate" {
+            title "Bulk character asset processing flow"
             autoLayout lr
 
 #            <element identifier> -> <element identifier> [description] [technology]
 #            <relationship identifier> [description]
-             adam -> userCommandsCLI "create a new user"
-             userCommandsCLI -> userCommands "sends create-new-user command"
-             userCommands -> userCommandProcessor "forwards create-new-user command"
-             userCommandProcessor -> userInProgressCollection "saves new user data"
-             userCommandProcessor -> userEventProcessor "sends new-user-created event"
-             userEventProcessor -> userCollection "save user to"
+             adam -> assetWebUI "upload file of new character assets"
+             assetWebUI -> assetServices "forwards the file for processing"
+             assetServices -> characterAssetTable "inserts or updates assets"
         }
-*/
     }
 }
