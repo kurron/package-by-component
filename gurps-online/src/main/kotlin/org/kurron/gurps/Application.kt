@@ -3,6 +3,7 @@ package org.kurron.gurps
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.core.env.Environment
+import org.springframework.modulith.core.ApplicationModules
 
 @SpringBootApplication
 class Application(private val environment: Environment) {
@@ -20,5 +21,8 @@ ApplicationListener<ApplicationReadyEvent> readyEventApplicationListener() {
 }
 
 fun main(args: Array<String>) {
+	var modules = ApplicationModules.of(Application::class.java).verify()
+	//modules.forEach(println(it))
+
 	runApplication<Application>(*args)
 }
