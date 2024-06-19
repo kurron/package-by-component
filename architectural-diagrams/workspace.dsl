@@ -128,52 +128,124 @@ workspace "GURPS Online" "Second" {
                     }
                 }
             }
-            database = container "GURPS Database" {
-                description "Persistent storage of GURPS data"
-                technology "MongoDB"
+            userNamespace = container "User Namespace" {
+                description "User information in its own space"
+                technology "PostgreSQL"
                 tags "DataStore"
                 perspectives {
                 }
-                component "User Namespace" {
-                    description "User information in its own space"
-                    technology "MongoDB"
+                component "Users Table" {
+                    description "Individual users"
+                    technology "PostgreSQL"
                     perspectives {
                     }
-                    userServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    userServices -> this "read/write user data" "Spring Data JDBC" "jdbc-driver" {
                     }
                 }
-                component "Campaign Namespace" {
-                    description "Campaign information in its own space"
-                    technology "MongoDB"
+                component "Group Table" {
+                    description "Associate users to groups"
+                    technology "PostgreSQL"
                     perspectives {
                     }
-                    campaignServices -> this "read/write campaign data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    userServices -> this "read/write group data" "Spring Data JDBC" "jdbc-driver" {
                     }
                 }
-                component "Character Namespace" {
-                    description "Character information in its own space"
-                    technology "MongoDB"
+            }
+            campaignNamespace = container "Campaign Namespace" {
+                description "Campaign information in its own space"
+                technology "PostgreSQL"
+                tags "DataStore"
+                perspectives {
+                }
+                component "Campaign Table" {
+                    description "Campaign information"
+                    technology "PostgreSQL"
                     perspectives {
                     }
-                    characterServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    campaignServices -> this "read/write campaign data" "Spring Data JDBC" "jdbc-driver" {
                     }
                 }
-                component "Asset Namespace" {
-                    description "Asset information in its own space"
-                    technology "MongoDB"
+                component "Party Table" {
+                    description "Associate characters to campaigns"
+                    technology "PostgreSQL"
                     perspectives {
                     }
-                    assetServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    campaignServices -> this "read/write party data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Asset Table" {
+                    description "Associate campaigns to their assets"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    campaignServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+            }
+            characterNamespace = container "Character Namespace" {
+                description "Character information in its own space"
+                technology "PostgreSQL"
+                tags "DataStore"
+                perspectives {
+                }
+                component "Character Table" {
+                    description "Character information"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    characterServices -> this "read/write character data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Asset Table" {
+                    description "Associate characters to their acquired assets"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    characterServices -> this "read/write character data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+            }
+            assetNamespace = container "Asset Namespace" {
+                description "Asset information in its own space"
+                technology "PostgreSQL"
+                tags "DataStore"
+                perspectives {
+                }
+                component "Character Table" {
+                    description "Assets for character use"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    assetServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Campaign Table" {
+                    description "Assets for campaign use"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    assetServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
                     }
                 }
             }
         }
 
         production = deploymentEnvironment "production" {
-            deploymentNode "MongoDB Cluster" {
-                description "MongoDB fault tolerant cluster"
-                technology "Hosted MongoDB"
-                containerInstance database
+            deploymentNode "PostgreSQL Cluster" {
+                description "Fault tolerant cluster"
+                technology "Hosted PostgreSQL"
+                deploymentNode "Campaign Namespace" {
+                    containerInstance campaignNamespace
+                }
+                deploymentNode "Asset Namespace" {
+                    containerInstance assetNamespace
+                }
+                deploymentNode "Character Namespace" {
+                    containerInstance characterNamespace
+                }
+                deploymentNode "User Namespace" {
+                    containerInstance userNamespace
+                }
             }
             productionKubernetes = deploymentNode "Kubernetes Cluster" {
                 description "On-prem Kubernetes cluster"
@@ -252,6 +324,11 @@ workspace "GURPS Online" "Second" {
                 style dashed
                 color #F64C72
             }
+            relationship "jdbc-driver" {
+                thickness 2
+                style dashed
+                color #F64C72
+            }
         }
 
         systemContext "gurps" "system-context" "Double click on + to expand view" {
@@ -290,8 +367,26 @@ workspace "GURPS Online" "Second" {
             autoLayout
         }
 
-        component "database" "database" "Double click on + to expand view" {
-            title "Data segregated by feature"
+        component "userNamespace" "container-user-namespace" "Double click on + to expand view" {
+            title "Tables within the namespace"
+            include *
+            autoLayout
+        }
+
+        component "campaignNamespace" "container-campaign-namespace" "Double click on + to expand view" {
+            title "Tables within the namespace"
+            include *
+            autoLayout
+        }
+
+        component "characterNamespace" "container-character-namespace" "Double click on + to expand view" {
+            title "Tables within the namespace"
+            include *
+            autoLayout
+        }
+
+        component "assetNamespace" "container-asset-namespace" "Double click on + to expand view" {
+            title "Tables within the namespace"
             include *
             autoLayout
         }
