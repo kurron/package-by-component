@@ -44,47 +44,95 @@ workspace "GURPS Online" "Second" {
             description "Online version of GURPS release 4"
             perspectives {
             }
-            backend = container "Backend Services" {
-                description "Services used by the UI, broken up by feature"
-                technology "Spring Cloud Stream"
+            userFeature = container "User Feature" {
+                description "Manages system users"
+                technology "Spring Modulith Module"
                 tags "tag"
                 perspectives {
                 }
-                userFeature = component "User Feature" {
-                    description "Module providing user management features"
-                    technology "Spring Cloud Stream"
+                userWebUI = component "User Web UI" {
+                    description "User management GUI"
+                    technology "HTML,JavaScript"
                     perspectives {
                     }
-                }
-                campaignFeature = component "Campaign Feature" {
-                    description "Module providing campaign management features"
-                    technology "Spring Cloud Stream"
-                    perspectives {
+                    adam -> this "manages Users" "JSON over HTTP" "json-over-http" {
                     }
                 }
-                characterFeature = component "Character Feature" {
-                    description "Module providing character management features"
-                    technology "Spring Cloud Stream"
+                userServices = component "User Services" {
+                    description "User management services"
+                    technology "Spring Controller"
                     perspectives {
                     }
-                }
-                assetFeature = component "Asset Feature" {
-                    description "Module providing asset management features"
-                    technology "Spring Cloud Stream"
-                    perspectives {
+                    userWebUI -> this "call user management APIs" "JSON over HTTPS" "son-over-http" {
                     }
                 }
             }
-            apiGateway = container "API Gateway" {
-                description "GURPS REST APIs"
-                technology "Spring Cloud API Gateway"
+            campaignFeature = container "Campaign Feature" {
+                description "Manages campaigns"
+                technology "Spring Modulith Module"
                 tags "tag"
                 perspectives {
                 }
-                component "Foo Component" {
-                    description "Some description"
-                    technology "Some technology"
+                campaignWebUI = component "Campaign Web UI" {
+                    description "Campaign management GUI"
+                    technology "HTML,JavaScript"
                     perspectives {
+                    }
+                    gary -> this "manages campaigns" "JSON over HTTP" "json-over-http" {
+                    }
+                }
+                campaignServices = component "Campaign Services" {
+                    description "Campaign management services"
+                    technology "Spring Controller"
+                    perspectives {
+                    }
+                    campaignWebUI -> this "call campaign management APIs" "JSON over HTTPS" "son-over-http" {
+                    }
+                }
+            }
+            characterFeature = container "Character Feature" {
+                description "Manages characters"
+                technology "Spring Modulith Module"
+                tags "tag"
+                perspectives {
+                }
+                characterWebUI = component "Character Web UI" {
+                    description "Character management GUI"
+                    technology "HTML,JavaScript"
+                    perspectives {
+                    }
+                    penny -> this "manages characters" "JSON over HTTP" "json-over-http" {
+                    }
+                }
+                characterServices = component "Character Services" {
+                    description "Character management services"
+                    technology "Spring Controller"
+                    perspectives {
+                    }
+                    characterWebUI -> this "call character management APIs" "JSON over HTTPS" "son-over-http" {
+                    }
+                }
+            }
+            assetFeature = container "Asset Feature" {
+                description "Manages character and campaign assets"
+                technology "Spring Modulith Module"
+                tags "tag"
+                perspectives {
+                }
+                assetWebUI = component "Asset Web UI" {
+                    description "Asset management GUI"
+                    technology "HTML,JavaScript"
+                    perspectives {
+                    }
+                    adam -> this "manages Assets" "JSON over HTTP" "json-over-http" {
+                    }
+                }
+                assetServices = component "Asset Services" {
+                    description "Asset management services"
+                    technology "Spring Controller"
+                    perspectives {
+                    }
+                    assetWebUI -> this "call asset management APIs" "JSON over HTTPS" "son-over-http" {
                     }
                 }
             }
@@ -99,7 +147,7 @@ workspace "GURPS Online" "Second" {
                     technology "MongoDB"
                     perspectives {
                     }
-                    userFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    userServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
                 component "Campaign Tenant" {
@@ -107,7 +155,7 @@ workspace "GURPS Online" "Second" {
                     technology "MongoDB"
                     perspectives {
                     }
-                    campaignFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    campaignServices -> this "read/write campaign data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
                 component "Character Tenant" {
@@ -115,7 +163,7 @@ workspace "GURPS Online" "Second" {
                     technology "MongoDB"
                     perspectives {
                     }
-                    characterFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
+                    characterServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
                 component "Asset Tenant" {
@@ -123,67 +171,7 @@ workspace "GURPS Online" "Second" {
                     technology "MongoDB"
                     perspectives {
                     }
-                    assetFeature -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
-                    }
-                }
-            }
-            frontend = container "Web User Interface" {
-                description "Graphical user interface"
-                technology "HTML, Javascript"
-                tags "WebUI"
-                perspectives {
-                }
-                administratorUI = component "Administrator UI" {
-                    description "Administrator UI"
-                    technology "HTML, Javascript"
-                    perspectives {
-                    }
-                }
-                campaignUI = component "Campaign UI" {
-                    description "Campaign UI"
-                    technology "HTML, Javascript"
-                    perspectives {
-                    }
-                }
-                characterUI = component "Character UI" {
-                    description "Character UI"
-                    technology "HTML, Javascript"
-                    perspectives {
-                    }
-                }
-                gary -> campaignUI "manages campaigns" "JSON over HTTP" "json-over-http" {
-                }
-                penny -> characterUI "manages characters" "JSON over HTTP" "json-over-http" {
-                }
-                adam -> administratorUI "manages Users" "JSON over HTTP" "json-over-http" {
-                }
-                campaignUI -> apiGateway "sends request" "JSON over HTTP" "json-over-http" {
-                }
-                characterUI -> apiGateway "sends request" "JSON over HTTP" "json-over-http" {
-                }
-                administratorUI -> apiGateway "sends request" "JSON over HTTP" "json-over-http" {
-                }
-            }
-
-            messageBroker = container "Message Broker" {
-                description "Messaging fabric"
-                technology "RabbitMQ"
-                tags "MessageBroker"
-                perspectives {
-                }
-                apiGateway -> this "sends messages to" "JSON over AMQP" "json-over-amqp"
-                this -> backend "sends messages to" "JSON over AMQP" "json-over-amqp"
-                cli -> this "sends messages to" "JSON over AMQP" "json-over-amqp"
-                component "Point-to-Multipoint Messages" {
-                    description "Fanout Exchange, routing messages to all queues"
-                    technology "RabbitMQ"
-                    perspectives {
-                    }
-                }
-                component "Point-to-Point Messages" {
-                    description "Topic Exchange, routing messages to the proper queue"
-                    technology "RabbitMQ"
-                    perspectives {
+                    assetServices -> this "read/write user data" "JSON over MongoDB Wire Protocol" "json-over-mongodb-wire-protocol" {
                     }
                 }
             }
@@ -195,31 +183,14 @@ workspace "GURPS Online" "Second" {
                 technology "Hosted MongoDB"
                 containerInstance database
             }
-            deploymentNode "RabbitMQ Cluster" {
-                description "RabbitMQ fault tolerant cluster"
-                technology "Hosted RabbitMQ"
-                containerInstance messageBroker
-            }
             productionKubernetes = deploymentNode "Kubernetes Cluster" {
                 description "On-prem Kubernetes cluster"
                 technology "K3S, Rancher"
-                deploymentNode "Backend Pods" {
+                deploymentNode "GURPS Pods" {
                     description "On-prem Kubernetes cluster"
                     technology "Kubernetes"
                     instances 8
-                    containerInstance backend
-                }
-                deploymentNode "Frontend Pods" {
-                    description "On-prem Kubernetes cluster"
-                    technology "Kubernetes"
-                    instances 8
-                    containerInstance frontend
-                }
-                deploymentNode "API Gateway Pods" {
-                    description "On-prem Kubernetes cluster"
-                    technology "Kubernetes"
-                    instances 16
-                    containerInstance apiGateway
+                    containerInstance userFeature
                 }
             }
         }
@@ -292,32 +263,32 @@ workspace "GURPS Online" "Second" {
             autoLayout
         }
 
-        component "backend" "backend" "Double click on + to expand view" {
-            title "Loosely coupled monolith"
+        component "userFeature" "container-user-feature" "Double click on + to expand view" {
+            title "Components supporting user management"
             include *
             autoLayout
         }
 
-        component "messageBroker" "message-broker" "Double click on + to expand view" {
-            title "Message Broker"
+        component "campaignFeature" "container-campaign-feature" "Double click on + to expand view" {
+            title "Components supporting campaign management"
+            include *
+            autoLayout
+        }
+
+        component "characterFeature" "container-character-feature" "Double click on + to expand view" {
+            title "Components supporting character management"
+            include *
+            autoLayout
+        }
+
+        component "assetFeature" "container-asset-feature" "Double click on + to expand view" {
+            title "Components supporting asset management"
             include *
             autoLayout
         }
 
         component "database" "database" "Double click on + to expand view" {
             title "Data segregated by feature"
-            include *
-            autoLayout
-        }
-
-        component "frontend" "frontend" "Double click on + to expand view" {
-            title "Graphical User Interface components"
-            include *
-            autoLayout
-        }
-
-        component "apiGateway" "api-gateway" "Double click on + to expand view" {
-            title "API Gateway components"
             include *
             autoLayout
         }
