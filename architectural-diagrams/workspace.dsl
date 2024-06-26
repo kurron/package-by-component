@@ -205,14 +205,54 @@ workspace "GURPS Online" "Second" {
                     }
                 }
             }
-            assetNamespace = container "Asset Namespace" {
-                description "Asset information in its own space"
+            equipmentNamespace = container "Equipment Namespace" {
+                description "Equipment information in its own space"
                 technology "PostgreSQL"
                 tags "DataStore"
                 perspectives {
                 }
-                characterAssetTable = component "Character Table" {
-                    description "Assets for character use"
+                component "Firearms Table" {
+                    description "Firearm descriptions"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    assetServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Ranged Weapons Table" {
+                    description "Ranged weapons descriptions"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    assetServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Melee Weapons Table" {
+                    description "Melee weapons descriptions"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    assetServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Armor Table" {
+                    description "Armor descriptions"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    assetServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Shield Table" {
+                    description "Shield descriptions"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    assetServices -> this "read/write asset data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                characterEquipmentTable = component "Character Table" {
+                    description "Equipment for character use"
                     technology "PostgreSQL"
                     perspectives {
                     }
@@ -220,7 +260,7 @@ workspace "GURPS Online" "Second" {
                     }
                 }
                 component "Campaign Table" {
-                    description "Assets for campaign use"
+                    description "Equipment for campaign use"
                     technology "PostgreSQL"
                     perspectives {
                     }
@@ -237,8 +277,8 @@ workspace "GURPS Online" "Second" {
                 deploymentNode "Campaign Namespace" {
                     containerInstance campaignNamespace
                 }
-                deploymentNode "Asset Namespace" {
-                    containerInstance assetNamespace
+                deploymentNode "Equipment Namespace" {
+                    containerInstance equipmentNamespace
                 }
                 deploymentNode "Character Namespace" {
                     containerInstance characterNamespace
@@ -385,7 +425,7 @@ workspace "GURPS Online" "Second" {
             autoLayout
         }
 
-        component "assetNamespace" "container-asset-namespace" "Double click on + to expand view" {
+        component "equipmentNamespace" "container-asset-namespace" "Double click on + to expand view" {
             title "Tables within the namespace"
             include *
             autoLayout
@@ -405,7 +445,7 @@ workspace "GURPS Online" "Second" {
 #            <relationship identifier> [description]
              adam -> assetWebUI "upload file of new character assets"
              assetWebUI -> assetServices "forwards the file for processing"
-             assetServices -> characterAssetTable "inserts or updates assets"
+             assetServices -> characterEquipmentTable "inserts or updates assets"
         }
     }
 }
