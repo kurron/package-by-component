@@ -95,6 +95,8 @@ workspace "GURPS Online" "Second" {
                     }
                     penny -> this "manages characters" "JSON over HTTP" "json-over-http" {
                     }
+                    adam -> this "manages available skills, advantages, et al" "JSON over HTTP" "json-over-http" {
+                    }
                 }
                 characterServices = component "Character Services" {
                     description "Character management services"
@@ -187,6 +189,30 @@ workspace "GURPS Online" "Second" {
                 technology "PostgreSQL"
                 tags "DataStore"
                 perspectives {
+                }
+                component "Skills Table" {
+                    description "Available character skills"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    characterServices -> this "read/write character data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Disadvantages Table" {
+                    description "Available character disadvantages"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    characterServices -> this "read/write character data" "Spring Data JDBC" "jdbc-driver" {
+                    }
+                }
+                component "Advantages Table" {
+                    description "Available character advantages"
+                    technology "PostgreSQL"
+                    perspectives {
+                    }
+                    characterServices -> this "read/write character data" "Spring Data JDBC" "jdbc-driver" {
+                    }
                 }
                 component "Character Table" {
                     description "Character information"
