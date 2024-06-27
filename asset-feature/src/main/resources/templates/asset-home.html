@@ -6,5 +6,14 @@
 </head>
 <body>
 <h1>Hello from Asset!</h1>
+
+
+<h3>Available armor:</h3>
+<div>
+    <ul>
+        <li th:each="armor : ${ARMOR}" th:text="${armor.type}"></li>
+    </ul>
+</div>
+
 </body>
 </html>
