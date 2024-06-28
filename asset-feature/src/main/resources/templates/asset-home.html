@@ -9,10 +9,21 @@
 
 
 <h3>Available armor:</h3>
-<div>
-    <ul>
-        <li th:each="armor : ${ARMOR}" th:text="${armor.type}"></li>
-    </ul>
+<div th:if="${ not#lists.isEmpty(ARMOR)}">
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Damage Resistance</th>
+            <th>Cost</th>
+            <th>Weight</th>
+        </tr>
+        <tr th:each="armor : ${ARMOR}">
+            <td th:text="${armor.type}"></td>
+            <td th:text="${armor.damageResistance}"></td>
+            <td th:text="${armor.cost}"></td>
+            <td th:text="${armor.weight}"></td>
+        </tr>
+    <table>
 </div>
 
 </body>
