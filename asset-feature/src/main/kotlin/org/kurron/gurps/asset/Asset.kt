@@ -14,12 +14,16 @@ import java.util.concurrent.ThreadLocalRandom
 @Table(name = "assets", schema = "asset")
 internal data class Asset(@Column("id") @Id val id: Int = 0,
                           @Column("version") @Version val version: Int = 0,
+                          @Column("type") val type: String,
+                          @Column("damage_resistance") val damageResistant: Int = 0,
+                          @Column("cost") val cost: Int = 0,
+                          @Column("weight") val weight: Int = 0,
                           @Column("created_by") @CreatedBy val createdBy: String? = null,
                           @Column("created_on") @CreatedDate val createdOn: Instant? = null,
                           @Column("modified_by") @LastModifiedBy val modifiedBy: String? = null,
                           @Column("modified_on") @LastModifiedDate val modifiedOn: Instant? = null) {
     companion object {
-        fun randomInstance() = Asset()
+        fun randomInstance() = Asset(type = "unknown")
         private fun randomString() = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE).toString(16)
     }
 }

@@ -2,7 +2,6 @@ package org.kurron.gurps.asset
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -52,10 +51,10 @@ class AssetRepositoryTest {
     fun verifyWrite() {
         val running = postgresql.isRunning()
         assertTrue(running, "Database is not running!")
-        val toSave = Asset.randomInstance()
+        val toSave = Asset(type = "Cloth Armor", damageResistant = 0, cost = 150, weight = 12)
         val written = sut.save(toSave)
         val read = sut.findById(written.id)
-        val toUpdate = read.get().copy(modifiedBy = "Ronbo")
+        val toUpdate = read.get().copy(damageResistant = 1)
         Thread.sleep(Duration.ofSeconds(2))
         sut.save(toUpdate)
         val all = sut.findAll()
