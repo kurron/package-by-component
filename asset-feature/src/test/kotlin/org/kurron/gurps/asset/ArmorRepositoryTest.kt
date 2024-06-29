@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.data.domain.AuditorAware
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -13,8 +11,6 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.Duration
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 import kotlin.test.assertTrue
 
 @Testcontainers
@@ -47,10 +43,10 @@ class ArmorRepositoryTest {
     fun verifyWrite() {
         val running = postgresql.isRunning()
         assertTrue(running, "Database is not running!")
-        val toSave = Armor(type = "Cloth Armor", damageResistant = 0, cost = 150, weight = 12)
+        val toSave = Armor(type = "Cloth Armor", damageResistance = 0, cost = 150, weight = 12)
         val written = sut.save(toSave)
         val read = sut.findById(written.id)
-        val toUpdate = read.get().copy(damageResistant = 1)
+        val toUpdate = read.get().copy(damageResistance = 1)
         Thread.sleep(Duration.ofSeconds(2))
         sut.save(toUpdate)
         val all = sut.findAll()

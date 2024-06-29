@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom
 internal data class Armor(@Column("id") @Id val id: Int = 0,
                           @Column("version") @Version val version: Int = 0,
                           @Column("type") val type: String,
-                          @Column("damage_resistance") val damageResistant: Int = 0,
+                          @Column("damage_resistance") val damageResistance: Int = 0,
                           @Column("cost") val cost: Int = 0,
                           @Column("weight") val weight: Int = 0,
                           @Column("created_by") @CreatedBy val createdBy: String? = null,
