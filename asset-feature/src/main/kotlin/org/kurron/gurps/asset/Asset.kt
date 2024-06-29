@@ -8,16 +8,16 @@ import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
-import java.time.LocalDateTime
+import java.time.Instant
 import java.util.concurrent.ThreadLocalRandom
 
 @Table(name = "assets", schema = "asset")
 internal data class Asset(@Column("id") @Id val id: Int = 0,
                           @Column("version") @Version val version: Int = 0,
-                          @Column("created_by") @CreatedBy val createdBy: String = "unknown",
-                          @Column("created_on") @CreatedDate val createdOn: LocalDateTime = LocalDateTime.now(),
-                          @Column("modified_by") @LastModifiedBy val modifiedBy: String = "unknown",
-                          @Column("modified_on") @LastModifiedDate val modifiedOn: LocalDateTime = LocalDateTime.now()) {
+                          @Column("created_by") @CreatedBy val createdBy: String? = null,
+                          @Column("created_on") @CreatedDate val createdOn: Instant? = null,
+                          @Column("modified_by") @LastModifiedBy val modifiedBy: String? = null,
+                          @Column("modified_on") @LastModifiedDate val modifiedOn: Instant? = null) {
     companion object {
         fun randomInstance() = Asset()
         private fun randomString() = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE).toString(16)

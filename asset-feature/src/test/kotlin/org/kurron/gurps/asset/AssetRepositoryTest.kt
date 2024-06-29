@@ -2,23 +2,27 @@ package org.kurron.gurps.asset
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection
-import org.springframework.core.io.FileSystemResource
-import org.springframework.data.jdbc.core.mapping.schema.LiquibaseChangeSetWriter
-import org.springframework.data.relational.core.mapping.RelationalMappingContext
-import org.springframework.data.repository.config.BootstrapMode
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Import
+import org.springframework.data.domain.AuditorAware
+import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.io.File
+import java.time.Duration
+import java.util.*
+import java.util.concurrent.ThreadLocalRandom
+import kotlin.test.assertTrue
 
 @Testcontainers
 @SpringBootTest
+@Import(AssetRepositoryTest.Companion.AdditionalBeans::class)
+@EnableJdbcAuditing //TODO: enable this everywhere?
 class AssetRepositoryTest {
     companion object {
         @Container
@@ -33,6 +37,12 @@ class AssetRepositoryTest {
         fun postgresqlProperties(registry: DynamicPropertyRegistry) {
             registry.add("spring.datasource.url") { "${postgresql.getJdbcUrl()}&TC_TMPFS=/testtmpfs:rw" }
         }
+
+        @TestConfiguration
+        class AdditionalBeans {
+            @Bean
+            fun fauxAuditor(): AuditorAware<String> = FauxAuditor()
+        }
     }
 
     @Autowired
@@ -41,7 +51,23 @@ class AssetRepositoryTest {
     @Test
     fun verifyWrite() {
         val running = postgresql.isRunning()
+        assertTrue(running, "Database is not running!")
+        val toSave = Asset.randomInstance()
+        val written = sut.save(toSave)
+        val read = sut.findById(written.id)
+        val toUpdate = read.get().copy(modifiedBy = "Ronbo")
+        Thread.sleep(Duration.ofSeconds(2))
+        sut.save(toUpdate)
         val all = sut.findAll()
         val i = 0
     }
 }
+
+// pretends to know how to locate the currently authenticated in user
+class FauxAuditor : AuditorAware<String> {
+    override fun getCurrentAuditor(): Optional<String> {
+        return Optional.of(ThreadLocalRandom.current().nextLong(Long.MAX_VALUE).toString(16).uppercase())
+    }
+}
+
+
