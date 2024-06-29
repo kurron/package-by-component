@@ -19,8 +19,7 @@ import java.util.concurrent.ThreadLocalRandom
 import kotlin.test.assertTrue
 
 @Testcontainers
-@SpringBootTest
-@Import(ArmorRepositoryTest.Companion.AdditionalBeans::class)
+@SpringBootTest(classes = [ArmorRepositoryTest.Companion.AdditionalBeans::class])
 @ActiveProfiles(profiles = ["test"])
 class ArmorRepositoryTest {
     companion object {
