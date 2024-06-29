@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.data.domain.AuditorAware
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
@@ -20,6 +21,7 @@ import kotlin.test.assertTrue
 @Testcontainers
 @SpringBootTest
 @Import(ArmorRepositoryTest.Companion.AdditionalBeans::class)
+@ActiveProfiles(profiles = ["test"])
 class ArmorRepositoryTest {
     companion object {
         @Container
