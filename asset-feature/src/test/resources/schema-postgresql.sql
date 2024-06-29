@@ -11,8 +11,8 @@ CREATE TABLE asset.armor (
     cost INT NOT NULL ,
     weight INT NOT NULL ,
     created_on TIMESTAMP NOT NULL ,
-    created_by VARCHAR(255) NOT NULL ,
+    created_by VARCHAR(64) NOT NULL ,
     modified_on TIMESTAMP NOT NULL ,
-    modified_by VARCHAR(255) NOT NULL
+    modified_by VARCHAR(64) NOT NULL
 );
 

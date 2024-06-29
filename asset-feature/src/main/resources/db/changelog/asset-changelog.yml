@@ -16,14 +16,14 @@ databaseChangeLog:
   - changeSet:
       id: assets-002
       author: rkurr@jvmguy.com
-      comment: Initial asset table
+      comment: Initial armor table
       labels: assets
       context: assets
       changes:
         - createTable:
             schemaName: asset
-            remarks: Holds armor, weapons, etc.
-            tableName: assets
+            remarks: Armor descriptions.
+            tableName: armor
             columns:
               - column:
                   name: id
@@ -31,12 +31,40 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: asset-pk
+                    primaryKeyName: armor-pk
                     nullable: false
               - column:
                   name: version
                   type: int
                   remarks: optimistic locking
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: type
+                  type: varchar(64)
+                  remarks: type of armor
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: damage_resistance
+                  type: int
+                  remarks: amount of protection offered
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: cost
+                  type: int
+                  remarks: cost, in world currency, to purchase
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: weight
+                  type: int
+                  remarks: weight, in world measures
                   constraints:
                     nullable: false
                     validateNullable: true

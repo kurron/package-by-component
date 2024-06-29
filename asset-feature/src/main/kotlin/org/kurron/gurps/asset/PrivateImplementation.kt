@@ -9,7 +9,8 @@ internal class PrivateImplementation(private val events: ApplicationEventPublish
 
     @Transactional
     override fun foo(): String {
-        val primaryKey = repository.save(Armor.randomInstance())
+        val fake = Armor(type = "Fake Armor", damageResistant = 0, cost = 0, weight = 0)
+        val primaryKey = repository.save(fake)
         events.publishEvent("Just persisted asset " + primaryKey.id)
         return "org.kurron.gurps.asset.PrivateImplementation called!"
     }
