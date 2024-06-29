@@ -20,9 +20,9 @@ import kotlin.test.assertTrue
 
 @Testcontainers
 @SpringBootTest
-@Import(AssetRepositoryTest.Companion.AdditionalBeans::class)
+@Import(ArmorRepositoryTest.Companion.AdditionalBeans::class)
 @EnableJdbcAuditing //TODO: enable this everywhere?
-class AssetRepositoryTest {
+class ArmorRepositoryTest {
     companion object {
         @Container
         @JvmStatic
@@ -45,13 +45,13 @@ class AssetRepositoryTest {
     }
 
     @Autowired
-    private lateinit var sut: AssetRepository
+    private lateinit var sut: ArmorRepository
 
     @Test
     fun verifyWrite() {
         val running = postgresql.isRunning()
         assertTrue(running, "Database is not running!")
-        val toSave = Asset(type = "Cloth Armor", damageResistant = 0, cost = 150, weight = 12)
+        val toSave = Armor(type = "Cloth Armor", damageResistant = 0, cost = 150, weight = 12)
         val written = sut.save(toSave)
         val read = sut.findById(written.id)
         val toUpdate = read.get().copy(damageResistant = 1)

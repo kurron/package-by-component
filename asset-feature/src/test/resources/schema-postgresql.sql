@@ -3,7 +3,7 @@
 
 CREATE SCHEMA asset;
 
-CREATE TABLE asset.assets (
+CREATE TABLE asset.armor (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     version INT NOT NULL ,
     type VARCHAR(255) NOT NULL ,
