@@ -1,4 +1,4 @@
-package org.kurron.gurps.asset
+package org.kurron.gurps.asset.armor
 
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate

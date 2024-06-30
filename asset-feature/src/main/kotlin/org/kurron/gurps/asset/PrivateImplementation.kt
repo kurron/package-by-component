@@ -1,5 +1,6 @@
 package org.kurron.gurps.asset
 
+import org.kurron.gurps.asset.armor.ArmorRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

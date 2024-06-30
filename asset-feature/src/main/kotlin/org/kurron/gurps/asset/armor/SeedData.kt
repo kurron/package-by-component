@@ -1,8 +1,7 @@
-package org.kurron.gurps.asset
+package org.kurron.gurps.asset.armor
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
-import org.springframework.stereotype.Component
 
 //.@Component
 internal class SeedData(private val repository: ArmorRepository) : CommandLineRunner {

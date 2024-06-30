@@ -1,4 +1,4 @@
-package org.kurron.gurps.asset
+package org.kurron.gurps.asset.armor
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
