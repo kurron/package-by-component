@@ -22,7 +22,7 @@ databaseChangeLog:
       changes:
         - createTable:
             schemaName: asset
-            remarks: Armor descriptions.
+            remarks: Armor descriptions
             tableName: armor
             columns:
               - column:
@@ -49,6 +49,82 @@ databaseChangeLog:
                     validateNullable: true
               - column:
                   name: damage_resistance
+                  type: int
+                  remarks: amount of protection offered
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: cost
+                  type: int
+                  remarks: cost, in world currency, to purchase
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: weight
+                  type: int
+                  remarks: weight, in world measures
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: created_by
+                  type: varchar(64)
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: created_on
+                  type: datetime
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: modified_by
+                  type: varchar(64)
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: modified_on
+                  type: datetime
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+        - createTable:
+            schemaName: asset
+            remarks: Shield descriptions
+            tableName: shields
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: shield-pk
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+                  remarks: optimistic locking
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: type
+                  type: varchar(64)
+                  remarks: type of shield
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: defense_bonus
                   type: int
                   remarks: amount of protection offered
                   constraints:
