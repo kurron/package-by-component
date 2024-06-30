@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 
-@Component
+//.@Component
 internal class SeedData(private val repository: ArmorRepository) : CommandLineRunner {
     companion object {
         @Suppress("JAVA_CLASS_ON_COMPANION")
