@@ -49,7 +49,7 @@ class ShieldRepositoryTest {
         val toSave = Shield(type = "Small Shield", defenseBonus = 0, cost = 40, weight = 8)
         val written = sut.save(toSave)
         val read = sut.findById(written.id)
-        val defenseBonus = ThreadLocalRandom.current().nextInt(Int.MAX_VALUE);
+        val defenseBonus = ThreadLocalRandom.current().nextInt(Int.MAX_VALUE)
         val toUpdate = read.get().copy(defenseBonus = defenseBonus)
         Thread.sleep(Duration.ofSeconds(2))
         sut.save(toUpdate)

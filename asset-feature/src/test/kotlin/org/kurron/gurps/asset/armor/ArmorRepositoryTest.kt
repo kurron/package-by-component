@@ -49,7 +49,7 @@ class ArmorRepositoryTest {
         val toSave = Armor(type = "Cloth Armor", damageResistance = 0, cost = 150, weight = 12)
         val written = sut.save(toSave)
         val read = sut.findById(written.id)
-        val damageResistance = ThreadLocalRandom.current().nextInt(Int.MAX_VALUE);
+        val damageResistance = ThreadLocalRandom.current().nextInt(Int.MAX_VALUE)
         val toUpdate = read.get().copy(damageResistance = damageResistance)
         Thread.sleep(Duration.ofSeconds(2))
         sut.save(toUpdate)
