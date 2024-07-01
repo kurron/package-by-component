@@ -1,13 +1,10 @@
-package org.kurron.gurps.asset.weapon
+package org.kurron.gurps.asset.technology
 
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.kurron.gurps.asset.technology.TechnologyLevel
-import org.kurron.gurps.asset.technology.TechnologyRepository
+import org.kurron.gurps.asset.shield.Shield
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -21,9 +18,9 @@ import java.time.Duration
 import java.util.concurrent.ThreadLocalRandom
 
 @Testcontainers
-@SpringBootTest(classes = [MeleeWeaponRepositoryTest.Companion.AdditionalBeans::class])
+@SpringBootTest(classes = [TechnologyRepositoryTest.Companion.AdditionalBeans::class])
 @ActiveProfiles(profiles = ["test"])
-class MeleeWeaponRepositoryTest {
+class TechnologyRepositoryTest {
     companion object {
         @Container
         @JvmStatic
@@ -43,38 +40,23 @@ class MeleeWeaponRepositoryTest {
     }
 
     @Autowired
-    private lateinit var technologyRepository: TechnologyRepository
-
-    @Autowired
-    private lateinit var sut: MeleeWeaponRepository
-
-    private lateinit var technologyLevel: TechnologyLevel
-
-    @BeforeEach
-    fun setup() {
-        technologyLevel = technologyRepository.save(TechnologyLevel(level = "Stone Age", description = "Prehistory and later", startingWealth = 250))
-    }
-
-    @AfterEach
-    fun teardown() {
-        technologyRepository.delete(technologyLevel)
-    }
+    private lateinit var sut: TechnologyRepository
 
     @Test
     @DisplayName("Verify CRUD operations")
     fun verifyCRUD() {
         val running = postgresql.isRunning()
         assertTrue(running, "Database is not running!")
-        val toSave = MeleeWeapon(technologyLevel = technologyLevel.id, weapon = "Axe", damage = "swinging + 2", damageType = "cutting", cost = 50, weight = 4, strength = 11)
+        val toSave = TechnologyLevel(level = "Stone Age", description = "Prehistory and later", startingWealth = 250)
         val written = sut.save(toSave)
         val read = sut.findById(written.id)
-        val cost = ThreadLocalRandom.current().nextInt(Int.MAX_VALUE)
-        val toUpdate = read.get().copy(cost = cost)
+        val startingWealth = ThreadLocalRandom.current().nextInt(Int.MAX_VALUE)
+        val toUpdate = read.get().copy(startingWealth = startingWealth)
         Thread.sleep(Duration.ofSeconds(2))
         sut.save(toUpdate)
         val all = sut.findAll()
         assertEquals(1, all.size, "Unexpected result size!")
-        assertEquals(cost, all.first().cost, "Coasts do not match!")
+        assertEquals(startingWealth, all.first().startingWealth, "Starting Wealth do not match!")
         sut.delete(all.first())
         val found = sut.findAll()
         assertTrue(found.isEmpty(), "Deletion did not work!")

@@ -278,6 +278,84 @@ databaseChangeLog:
                     validateNullable: true
         - createTable:
             schemaName: asset
+            remarks: Technology level
+            tableName: technology
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: technology-pk
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+                  remarks: optimistic locking
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: level
+                  type: varchar(64)
+                  remarks: technology level name
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: description
+                  type: varchar(64)
+                  remarks: Earth history equivalent
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: starting_wealth
+                  type: int
+                  remarks: Suggested starting wealth
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: created_by
+                  type: varchar(64)
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: created_on
+                  type: datetime
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: modified_by
+                  type: varchar(64)
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+              - column:
+                  name: modified_on
+                  type: datetime
+                  remarks: auditing
+                  constraints:
+                    nullable: false
+                    validateNullable: true
+        - addForeignKeyConstraint:
+            baseTableSchemaName: asset
+            baseTableName: melee
+            baseColumnNames: technology_level
+            constraintName: fk_melee_technology
+            referencedTableSchemaName: asset
+            referencedTableName: technology
+            referencedColumnNames: id
+
+        - createTable:
+            schemaName: asset
             remarks: Holds skills
             tableName: skills
             columns:
