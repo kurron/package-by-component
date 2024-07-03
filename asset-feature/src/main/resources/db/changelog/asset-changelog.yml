@@ -16,7 +16,7 @@ databaseChangeLog:
   - changeSet:
       id: assets-002
       author: rkurr@jvmguy.com
-      comment: Initial armor table
+      comment: Initial table creation
       labels: assets
       context: assets
       changes:
@@ -498,3 +498,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     validateNullable: true
+  - changeSet:
+      id: assets-003
+      author: rkurr@jvmguy.com
+      comment: Add seed data
+      labels: assets
+      context: assets
+      changes:
+        - sqlFile:
+            relativeToChangelogFile: true
+            path: armor-seed-data.sql
