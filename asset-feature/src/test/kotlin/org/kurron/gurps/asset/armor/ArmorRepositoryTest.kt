@@ -1,12 +1,17 @@
 package org.kurron.gurps.asset.armor
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Import
+import org.springframework.data.domain.AuditorAware
+import org.springframework.data.jdbc.core.JdbcAggregateTemplate
+import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -14,10 +19,13 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.Duration
+import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
 @Testcontainers
-@SpringBootTest(classes = [ArmorRepositoryTest.Companion.AdditionalBeans::class])
+@DataJdbcTest
+@Import(ArmorRepositoryTest.Companion.AdditionalBeans::class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles(profiles = ["test"])
 class ArmorRepositoryTest {
     companion object {
@@ -35,11 +43,19 @@ class ArmorRepositoryTest {
         }
 
         @TestConfiguration
-        class AdditionalBeans
+        @EnableJdbcAuditing
+        class AdditionalBeans {
+            // pretends to know how to locate the currently authenticated user
+            @Bean
+            fun fauxAuditor(): AuditorAware<String> = AuditorAware<String> { Optional.of(ThreadLocalRandom.current().nextLong(Long.MAX_VALUE).toString(16).uppercase()) }
+        }
     }
 
     @Autowired
     private lateinit var sut: ArmorRepository
+
+    @Autowired
+    private lateinit var database: JdbcAggregateTemplate
 
     @Test
     @DisplayName("Verify CRUD operations")
@@ -52,12 +68,10 @@ class ArmorRepositoryTest {
         val damageResistance = ThreadLocalRandom.current().nextInt(Int.MAX_VALUE)
         val toUpdate = read.get().copy(damageResistance = damageResistance)
         Thread.sleep(Duration.ofSeconds(2))
-        sut.save(toUpdate)
-        val all = sut.findAll()
-        assertEquals(1, all.size, "Unexpected result size!")
-        assertEquals(damageResistance, all.first().damageResistance, "Damage Resistance do no match!")
-        sut.delete(all.first())
-        val found = sut.findAll()
-        assertTrue(found.isEmpty(), "Deletion did not work!")
+        val updated = sut.save(toUpdate)
+        val found = database.findById(toUpdate.id, Armor::class.java)
+        assertEquals(damageResistance, found.damageResistance, "Damage Resistance do no match!")
+        sut.delete(updated)
+        assertNull(database.findById(toUpdate.id, Armor::class.java), "Row still exists!")
     }
 }
