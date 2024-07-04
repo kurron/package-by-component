@@ -508,3 +508,6 @@ databaseChangeLog:
         - sqlFile:
             relativeToChangelogFile: true
             path: armor-seed-data.sql
+        - sqlFile:
+            relativeToChangelogFile: true
+            path: shields-seed-data.sql
